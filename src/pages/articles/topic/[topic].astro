@@ -1,0 +1,45 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import TopicNav from '../../../components/TopicNav.astro';
+import TopicIcon from '../../../components/TopicIcon.astro';
+import { getCollection } from 'astro:content';
+import { TOPICS, topicNames } from '../../../topics';
+
+export async function getStaticPaths() {
+  const all = await getCollection('articles');
+  return topicNames
+    .filter((n) => all.some((a) => a.data.category === n))
+    .map((n) => ({ params: { topic: TOPICS[n].slug }, props: { name: n } }));
+}
+const { name } = Astro.props;
+const t = TOPICS[name];
+const all = (await getCollection('articles')).sort((a, b) => +b.data.published - +a.data.published);
+const list = all.filter((a) => a.data.category === name);
+const counts = Object.fromEntries(topicNames.map((n) => [n, all.filter((a) => a.data.category === n).length]));
+---
+<Base title={`${name}の記事`} description={`${t.lead}。保護猫施設ねこの惑星がまとめた「${name}」の記事一覧です。北九州・小倉から、猫と暮らす人に役立つ情報を発信しています。`} crumbs={[{ name: 'お役立ち記事', path: '/articles/' }, { name, path: `/articles/topic/${t.slug}/` }]}>
+  <div class="wrap">
+    <header class:list={['page-head', `tone-${t.tone}`]}>
+      <TopicIcon icon={t.icon} size={64} />
+      <div>
+        <h1>{name}の記事</h1>
+        <p>{t.lead}。</p>
+      </div>
+    </header>
+    <TopicNav current={name} counts={counts} />
+    <div class="grid">
+      {list.map((a) => <ArticleCard id={a.id} {...a.data} />)}
+    </div>
+  </div>
+</Base>
+<style>
+  .page-head { display: flex; align-items: center; gap: 1.2rem; margin: 1.5rem 0 1.5rem; padding: 1.5rem; border-radius: var(--r-lg); background: var(--tone); color: var(--tone-deep); }
+  .page-head h1 { color: var(--ink); margin-bottom: .2rem; }
+  .page-head p { margin: 0; color: var(--ink-soft); }
+  .tone-peach { --tone: var(--peach); --tone-deep: var(--peach-deep); }
+  .tone-mint { --tone: var(--mint); --tone-deep: var(--mint-deep); }
+  .tone-lilac { --tone: var(--lilac); --tone-deep: var(--lilac-deep); }
+  .tone-sky { --tone: var(--sky); --tone-deep: var(--sky-deep); }
+  .tone-rose { --tone: var(--rose); --tone-deep: var(--rose-deep); }
+</style>

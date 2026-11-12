@@ -24,7 +24,7 @@ const ld = {
 };
 ---
 <Base title={`${d.title}｜テン・ムギ日記`} description={d.description} type="article" crumbs={[{ name: '日記', path: '/diary/' }, { name: d.title, path: `/diary/${entry.id}/` }]} jsonLd={[ld]}>
-  <article class="wrap prose">
+  <article class="narrow prose page">
     <p class="meta"><time datetime={isoDate(d.published)}>{formatDate(d.published)}</time>{d.cats.length > 0 && <>／登場：{d.cats.join('・')}</>}</p>
     <h1>{d.title}</h1>
     <Content />
@@ -37,7 +37,7 @@ const ld = {
 </Base>
 
 <style>
-  .meta { margin-top: 1.5rem; color: #5a6385; font-size: .9rem; }
+  .meta { margin-top: 1.5rem; color: var(--ink-soft); font-size: .9rem; }
   .more { margin-top: 2rem; }
   .pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .95rem; }
 </style>

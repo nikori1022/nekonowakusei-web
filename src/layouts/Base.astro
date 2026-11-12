@@ -109,17 +109,17 @@ const nav = [
   <header class="site-head">
     <div class="wrap head-row">
       <a class="logo" href={u('/')} aria-label={`${SITE.name} トップへ`}>
-        <img src={u('/favicon.svg')} alt="" width="36" height="36" />
-        <span>ねこの惑星</span>
+        <img src={u('/favicon.svg')} alt="" width="40" height="40" />
+        <span class="logo-text"><small>北九州・小倉の保護猫施設</small>ねこの惑星</span>
       </a>
       <nav aria-label="メインメニュー">
         <ul>
           {nav.map((n) => (
             <li><a href={u(n.path)} aria-current={Astro.url.pathname.startsWith(u(n.path)) ? 'page' : undefined}>{n.name}</a></li>
           ))}
-          <li><a class="visit" href={u('/visit/')}>見学・譲渡</a></li>
         </ul>
       </nav>
+      <a class="visit" href={u('/visit/')}>見学・譲渡</a>
     </div>
   </header>
 
@@ -139,21 +139,28 @@ const nav = [
   </main>
 
   <footer class="site-foot">
+    <div class="wrap foot-cta">
+      <div>
+        <p class="foot-cta-title">テンとムギに会いに来ませんか</p>
+        <p>見学は随時受け付けています。猫好きさん、里親を考えている方、どなたでも歓迎です。</p>
+      </div>
+      <a class="btn" href={u('/visit/')}>見学を申し込む</a>
+    </div>
     <div class="wrap foot-grid">
       <div>
-        <p class="foot-name">{SITE.name}</p>
+        <p class="foot-name"><img src={u('/favicon.svg')} alt="" width="32" height="32" />{SITE.name}</p>
         <p>{SITE.area}<br />運営：<a href={SITE.operator.url}>{SITE.operator.name}</a></p>
         <p>お問い合わせ：<a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
       </div>
       <div>
         <p class="foot-h">SNSで毎日の様子を発信中</p>
-        <ul class="sns">
+        <ul class="pills">
           {SITE.sns.map((s) => <li><a href={s.url} rel="me noopener">{s.name}</a></li>)}
         </ul>
       </div>
       <div>
         <p class="foot-h">サイト内</p>
-        <ul class="sns">
+        <ul class="links">
           {nav.map((n) => <li><a href={u(n.path)}>{n.name}</a></li>)}
           <li><a href={u('/visit/')}>見学・譲渡のご案内</a></li>
         </ul>
@@ -165,24 +172,40 @@ const nav = [
 </html>
 
 <style>
-  .site-head { background: var(--space); color: #fff; }
-  .head-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .8rem; flex-wrap: wrap; }
-  .logo { display: flex; align-items: center; gap: .55rem; color: #fff; text-decoration: none; font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; letter-spacing: .08em; }
-  .site-head ul { display: flex; flex-wrap: wrap; gap: .2rem 1.2rem; list-style: none; margin: 0; padding: 0; font-size: .95rem; }
-  .site-head nav a { color: #e6eaf7; text-decoration: none; padding-block: .3rem; }
-  .site-head nav a:hover, .site-head nav a[aria-current='page'] { color: #fff; text-decoration: underline; text-decoration-color: var(--ginger); text-decoration-thickness: 3px; }
-  .site-head nav a.visit { background: var(--ginger); color: var(--space-deep); padding: .35rem .9rem; border-radius: 999px; font-weight: 700; }
-  .site-head nav a.visit:hover { text-decoration: none; background: #ffad5c; }
+  .site-head { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.88); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--line); }
+  .head-row { display: flex; align-items: center; gap: 1.2rem; padding-block: .6rem; }
+  .logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; color: var(--ink); margin-right: auto; }
+  .logo-text { display: flex; flex-direction: column; font-family: var(--font-head); font-weight: 700; font-size: 1.35rem; line-height: 1.15; letter-spacing: .08em; }
+  .logo-text small { font-size: .62rem; font-weight: 500; color: var(--ink-soft); letter-spacing: .06em; }
+  .site-head ul { display: flex; gap: .2rem; list-style: none; margin: 0; padding: 0; font-size: .92rem; }
+  .site-head nav a { display: block; color: var(--ink); text-decoration: none; padding: .45rem .85rem; border-radius: 999px; font-weight: 500; }
+  .site-head nav a:hover { background: #f3f0fc; }
+  .site-head nav a[aria-current='page'] { background: var(--ginger-soft); color: var(--ginger-ink); font-weight: 700; }
+  .visit { flex: none; background: var(--ginger); color: #fff; font-weight: 700; font-size: .92rem; padding: .55rem 1.1rem; border-radius: 999px; text-decoration: none; }
+  .visit:hover { background: #e47f29; }
+  @media (max-width: 900px) {
+    .head-row { flex-wrap: wrap; row-gap: .3rem; }
+    .site-head nav { order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; }
+    .site-head ul { width: max-content; }
+    .site-head nav a { padding: .35rem .75rem; font-size: .88rem; }
+  }
 
-  .crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: .3rem; padding: 1rem 0 0; margin: 0; font-size: .85rem; color: #5a6385; }
+  .crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: .3rem; padding: 1.1rem 0 0; margin: 0; font-size: .8rem; color: var(--ink-soft); }
   .crumbs li + li::before { content: '›'; margin-right: .3rem; }
-  .crumbs a { color: #5a6385; }
+  .crumbs a { color: var(--ink-soft); }
 
-  .site-foot { background: var(--space); color: #d6dcf0; margin-top: 6rem; padding: 3rem 0 1.5rem; font-size: .92rem; }
-  .site-foot a { color: #ffc98f; }
-  .foot-grid { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
-  .foot-name { font-family: var(--font-head); font-size: 1.25rem; color: #fff; margin-bottom: .4rem; }
-  .foot-h { color: #fff; font-weight: 700; margin-bottom: .4rem; }
-  .sns { list-style: none; padding: 0; margin: 0; }
-  .copy { margin-top: 2rem; font-size: .8rem; color: #9aa4c8; }
+  .site-foot { margin-top: clamp(4rem, 9vw, 7rem); background: var(--paper); border-top: 1px solid var(--line); font-size: .92rem; }
+  .foot-cta { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; transform: translateY(-50%); background: linear-gradient(120deg, var(--peach), var(--lilac)); padding: 1.6rem 2rem; border-radius: var(--r-lg); }
+  .foot-cta p { margin: 0; }
+  .foot-cta-title { font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; margin-bottom: .2rem !important; }
+  .foot-grid { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); padding-bottom: 1rem; }
+  .foot-name { display: flex; align-items: center; gap: .5rem; font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; margin-bottom: .5rem; }
+  .foot-h { font-weight: 700; margin-bottom: .6rem; }
+  .pills { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .45rem; }
+  .pills a { display: inline-block; padding: .3rem .85rem; border-radius: 999px; background: #f3f0fc; color: var(--ink); text-decoration: none; font-size: .85rem; }
+  .pills a:hover { background: var(--ginger-soft); color: var(--ginger-ink); }
+  .links { list-style: none; padding: 0; margin: 0; columns: 2; }
+  .links a { color: var(--ink); text-decoration: none; line-height: 2.1; }
+  .links a:hover { color: var(--ginger-ink); text-decoration: underline; }
+  .copy { margin: 0 auto; padding: 1.2rem 0 2rem; font-size: .78rem; color: var(--ink-soft); border-top: 1px solid var(--line); }
 </style>

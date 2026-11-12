@@ -1,7 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import TopicIcon from '../../components/TopicIcon.astro';
 import { getCollection, render } from 'astro:content';
 import { SITE, u, formatDate, isoDate } from '../../site';
+import { TOPICS } from '../../topics';
 
 export async function getStaticPaths() {
   const all = await getCollection('articles');
@@ -10,6 +13,7 @@ export async function getStaticPaths() {
 const { entry, all } = Astro.props;
 const { Content, headings } = await render(entry);
 const d = entry.data;
+const t = TOPICS[d.category];
 const related = all.filter((a) => a.id !== entry.id && a.data.category === d.category).concat(all.filter((a) => a.id !== entry.id && a.data.category !== d.category)).slice(0, 3);
 const url = new URL(u(`/articles/${entry.id}/`), Astro.site).href;
 const root = new URL(u('/'), Astro.site).href;
@@ -23,17 +27,19 @@ const ld = {
   mainEntityOfPage: url,
   image: new URL(u('/og.png'), Astro.site).href,
   inLanguage: 'ja',
+  articleSection: d.category,
   author: { '@id': `${root}#org` },
   publisher: { '@id': `${root}#org` },
   ...(d.sources.length ? { citation: d.sources.map((s) => s.url) } : {}),
 };
 const toc = headings.filter((h) => h.depth === 2);
 ---
-<Base title={d.title} description={d.description} type="article" crumbs={[{ name: 'お役立ち記事', path: '/articles/' }, { name: d.title, path: `/articles/${entry.id}/` }]} jsonLd={[ld]}>
-  <article class="wrap">
-    <header class="prose">
-      <p class="cat">{d.category}</p>
+<Base title={d.title} description={d.description} type="article" crumbs={[{ name: 'お役立ち記事', path: '/articles/' }, { name: d.category, path: `/articles/topic/${t.slug}/` }, { name: d.title, path: `/articles/${entry.id}/` }]} jsonLd={[ld]}>
+  <article class="narrow">
+    <header class:list={['art-head', `tone-${t.tone}`]}>
+      <a class="chip" href={u(`/articles/topic/${t.slug}/`)}><TopicIcon icon={t.icon} size={28} />{d.category}</a>
       <h1>{d.title}</h1>
+      <p class="desc">{d.description}</p>
       <p class="meta">
         <time datetime={isoDate(d.published)}>{formatDate(d.published)}公開</time>
         {d.updated && <> ／ <time datetime={isoDate(d.updated)}>{formatDate(d.updated)}更新</time></>}
@@ -41,37 +47,49 @@ const toc = headings.filter((h) => h.depth === 2);
       </p>
     </header>
     {toc.length > 2 && (
-      <nav class="toc prose" aria-label="目次">
+      <nav class="toc" aria-label="目次">
         <p>この記事の内容</p>
         <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
       </nav>
     )}
     <div class="prose body"><Content /></div>
     {d.sources.length > 0 && (
-      <section class="prose sources" aria-labelledby="src-h">
+      <section class="sources" aria-labelledby="src-h">
         <h2 id="src-h">参考にした情報</h2>
         <ul>{d.sources.map((s) => <li><a href={s.url}>{s.name}</a></li>)}</ul>
       </section>
     )}
-    <aside class="prose visit">
-      <p><strong>北九州・小倉で保護猫に会えます。</strong>ねこの惑星では茶トラのテンとムギが暮らしています。<a href={u('/visit/')}>見学のご案内を見る</a></p>
+    <aside class="visit">
+      <div class="visit-face" aria-hidden="true"></div>
+      <p><strong>北九州・小倉で保護猫に会えます。</strong><br />ねこの惑星では茶トラのテンとムギが暮らしています。<a href={u('/visit/')}>見学のご案内を見る</a></p>
     </aside>
-    <section class="prose" aria-labelledby="rel-h">
-      <h2 id="rel-h">あわせて読みたい</h2>
-      <ul>{related.map((r) => <li><a href={u(`/articles/${r.id}/`)}>{r.data.title}</a></li>)}</ul>
-    </section>
   </article>
+  <section class="wrap sec" aria-labelledby="rel-h">
+    <div class="sec-head"><h2 id="rel-h">あわせて読みたい</h2></div>
+    <div class="grid">{related.map((r) => <ArticleCard id={r.id} {...r.data} />)}</div>
+  </section>
 </Base>
 
 <style>
-  .cat { color: var(--ginger-ink); font-weight: 700; margin: 1.5rem 0 .3rem; }
-  header h1 { font-size: clamp(1.75rem, 3.6vw, 2.4rem); }
-  .meta { font-size: .88rem; color: #5a6385; }
-  .toc { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.4rem; margin: 1.5rem 0 2rem; }
+  .art-head { margin: 1.4rem 0 1.8rem; padding: clamp(1.4rem, 4vw, 2.2rem); border-radius: var(--r-lg); background: var(--tone); }
+  .chip { display: inline-flex; align-items: center; gap: .35rem; padding: .2rem .9rem .2rem .3rem; border-radius: 999px; background: var(--paper); color: var(--tone-deep); font-weight: 700; font-size: .88rem; text-decoration: none; }
+  .art-head h1 { margin: .9rem 0 .7rem; font-size: clamp(1.55rem, 3.4vw, 2.15rem); }
+  .desc { color: var(--ink-soft); margin-bottom: .8rem; }
+  .meta { font-size: .82rem; color: var(--ink-soft); margin: 0; }
+  .toc { background: var(--paper); border: 2px solid var(--line); border-radius: var(--r-md); padding: 1.1rem 1.4rem; margin: 0 0 2rem; }
   .toc p { font-weight: 700; margin-bottom: .3rem; }
-  .toc ol { margin: 0; }
-  .body :global(h2) { padding-top: .6rem; border-top: 3px solid var(--ginger); display: inline-block; }
-  .visit { margin-top: 3rem; background: var(--space); color: #e6eaf7; padding: 1.2rem 1.5rem; border-radius: 12px; }
-  .visit a { color: #ffc98f; }
-  .sources { font-size: .92rem; }
+  .toc ol { margin: 0; padding-left: 1.3em; }
+  .toc li::marker { color: var(--ginger); font-weight: 700; }
+  .toc a { color: var(--ink); }
+  .body { max-width: none; }
+  .sources { margin-top: 2.5rem; font-size: .9rem; color: var(--ink-soft); }
+  .sources h2 { font-size: 1rem; }
+  .visit { display: flex; gap: 1rem; align-items: center; margin-top: 2.5rem; background: var(--ginger-soft); padding: 1.2rem 1.4rem; border-radius: var(--r-md); }
+  .visit p { margin: 0; }
+  .visit-face { flex: none; width: 3.2rem; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffb466, var(--ginger) 62%, #d97520); }
+  .tone-peach { --tone: var(--peach); --tone-deep: var(--peach-deep); }
+  .tone-mint { --tone: var(--mint); --tone-deep: var(--mint-deep); }
+  .tone-lilac { --tone: var(--lilac); --tone-deep: var(--lilac-deep); }
+  .tone-sky { --tone: var(--sky); --tone-deep: var(--sky-deep); }
+  .tone-rose { --tone: var(--rose); --tone-deep: var(--rose-deep); }
 </style>

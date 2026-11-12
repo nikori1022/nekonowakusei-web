@@ -1,20 +1,24 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
-import { u, formatDate, isoDate } from '../../site';
+import { u, isoDate } from '../../site';
 
 const diary = (await getCollection('diary')).sort((a, b) => +b.data.published - +a.data.published);
 ---
 <Base title="テン・ムギ日記" description="保護猫施設ねこの惑星で暮らす茶トラ猫、テンとムギの日記。おもちゃで遊ぶ姿や季節の過ごし方など、2匹の毎日を記録しています。" crumbs={[{ name: '日記', path: '/diary/' }]}>
-  <div class="wrap">
-    <h1>テン・ムギ日記</h1>
+  <div class="narrow">
+    <header class="page-head">
+      <h1>テン・ムギ日記</h1>
+      <p>施設での2匹の毎日を、ゆるく記録しています。動画はTikTokで毎日更新中。</p>
+    </header>
     <ul class="days">
       {diary.map((d) => (
         <li>
-          <time datetime={isoDate(d.data.published)}>{formatDate(d.data.published)}</time>
+          <time datetime={isoDate(d.data.published)}><span>{d.data.published.getMonth() + 1}/{d.data.published.getDate()}</span>{d.data.published.getFullYear()}</time>
           <div>
             <a href={u(`/diary/${d.id}/`)}>{d.data.title}</a>
             <p>{d.data.description}</p>
+            {d.data.cats.length > 0 && <p class="who">{d.data.cats.map((c) => <span>{c}</span>)}</p>}
           </div>
         </li>
       ))}
@@ -23,11 +27,16 @@ const diary = (await getCollection('diary')).sort((a, b) => +b.data.published - 
 </Base>
 
 <style>
-  .days { list-style: none; padding: 0; max-width: 46rem; }
-  .days li { display: grid; grid-template-columns: 9rem 1fr; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
-  .days time { color: #5a6385; font-size: .9rem; padding-top: .2rem; }
-  .days a { font-weight: 700; color: var(--space-deep); text-decoration: none; font-size: 1.1rem; }
-  .days a:hover { color: var(--ginger-ink); text-decoration: underline; }
-  .days p { margin: .2rem 0 0; }
-  @media (max-width: 560px) { .days li { grid-template-columns: 1fr; gap: .2rem; } }
+  .page-head { padding: 1.5rem 0 1rem; }
+  .page-head p { color: var(--ink-soft); }
+  .days { list-style: none; padding: 0; margin: 0; display: grid; gap: .9rem; }
+  .days li { position: relative; display: flex; gap: 1.2rem; align-items: center; padding: 1.1rem 1.3rem; background: var(--paper); border: 2px solid var(--line); border-radius: var(--r-md); }
+  .days li:hover { border-color: var(--ginger); }
+  .days time { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 4.6rem; aspect-ratio: 1; border-radius: 50%; background: var(--ginger-soft); color: var(--ginger-ink); font-size: .72rem; line-height: 1.2; }
+  .days time span { font-family: var(--font-head); font-weight: 700; font-size: 1.2rem; }
+  .days a { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 1.05rem; }
+  .days a::after { content: ''; position: absolute; inset: 0; }
+  .days p { margin: .15rem 0 0; color: var(--ink-soft); font-size: .9rem; line-height: 1.7; }
+  .who { display: flex; gap: .3rem; }
+  .who span { font-size: .75rem; padding: 0 .6rem; border-radius: 999px; background: var(--mint); color: var(--mint-deep); font-weight: 700; }
 </style>

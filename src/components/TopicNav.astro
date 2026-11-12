@@ -1,0 +1,31 @@
+---
+import TopicIcon from './TopicIcon.astro';
+import { TOPICS, topicNames, type TopicName } from '../topics';
+import { u } from '../site';
+interface Props { current?: TopicName; counts: Record<string, number> }
+const { current, counts } = Astro.props;
+---
+<nav class="tn" aria-label="トピックで絞り込む">
+  <ul>
+    <li><a href={u('/articles/')} aria-current={!current ? 'page' : undefined} class="all">すべて</a></li>
+    {topicNames.filter((n) => counts[n] > 0).map((n) => (
+      <li class={`tone-${TOPICS[n].tone}`}>
+        <a href={u(`/articles/topic/${TOPICS[n].slug}/`)} aria-current={current === n ? 'page' : undefined}>
+          <TopicIcon icon={TOPICS[n].icon} size={24} />{n}<small>{counts[n]}</small>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+<style>
+  .tn ul { list-style: none; padding: 0; margin: 0 0 2rem; display: flex; flex-wrap: wrap; gap: .5rem; }
+  .tn a { display: inline-flex; align-items: center; gap: .35rem; padding: .3rem .9rem .3rem .35rem; border-radius: 999px; background: var(--tone, #f3f0fc); color: var(--tone-deep, var(--ink)); text-decoration: none; font-weight: 700; font-size: .9rem; border: 2px solid transparent; }
+  .tn a.all { padding-left: .9rem; }
+  .tn a[aria-current='page'] { border-color: currentColor; background: var(--paper); }
+  .tn small { font-weight: 500; opacity: .8; }
+  .tone-peach { --tone: var(--peach); --tone-deep: var(--peach-deep); }
+  .tone-mint { --tone: var(--mint); --tone-deep: var(--mint-deep); }
+  .tone-lilac { --tone: var(--lilac); --tone-deep: var(--lilac-deep); }
+  .tone-sky { --tone: var(--sky); --tone-deep: var(--sky-deep); }
+  .tone-rose { --tone: var(--rose); --tone-deep: var(--rose-deep); }
+</style>
