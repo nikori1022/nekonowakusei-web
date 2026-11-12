@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import CatPlanet from '../components/CatPlanet.astro';
+import { u } from '../site';
+---
+<Base title="ページが見つかりません" noindex>
+  <div class="wrap nf">
+    <div class="art"><CatPlanet size={220} animate={false} title="茶トラ猫の顔をした惑星" /></div>
+    <div class="prose">
+      <h1>このページは見つかりませんでした</h1>
+      <p>URLが変わったか、ページが削除された可能性があります。トップページか、下のリンクから探してください。</p>
+      <ul>
+        <li><a href={u('/')}>トップページ</a></li>
+        <li><a href={u('/cats/')}>テンとムギ</a></li>
+        <li><a href={u('/articles/')}>お役立ち記事</a></li>
+        <li><a href={u('/visit/')}>見学・譲渡のご案内</a></li>
+      </ul>
+    </div>
+  </div>
+</Base>
+<style>
+  .nf { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; padding-top: 3rem; }
+  .art { background: var(--space); border-radius: 50%; padding: 1.2rem; }
+</style>

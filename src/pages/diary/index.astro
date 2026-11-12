@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { u, formatDate, isoDate } from '../../site';
+
+const diary = (await getCollection('diary')).sort((a, b) => +b.data.published - +a.data.published);
+---
+<Base title="テン・ムギ日記" description="保護猫施設ねこの惑星で暮らす茶トラ猫、テンとムギの日記。おもちゃで遊ぶ姿や季節の過ごし方など、2匹の毎日を記録しています。" crumbs={[{ name: '日記', path: '/diary/' }]}>
+  <div class="wrap">
+    <h1>テン・ムギ日記</h1>
+    <ul class="days">
+      {diary.map((d) => (
+        <li>
+          <time datetime={isoDate(d.data.published)}>{formatDate(d.data.published)}</time>
+          <div>
+            <a href={u(`/diary/${d.id}/`)}>{d.data.title}</a>
+            <p>{d.data.description}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .days { list-style: none; padding: 0; max-width: 46rem; }
+  .days li { display: grid; grid-template-columns: 9rem 1fr; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .days time { color: #5a6385; font-size: .9rem; padding-top: .2rem; }
+  .days a { font-weight: 700; color: var(--space-deep); text-decoration: none; font-size: 1.1rem; }
+  .days a:hover { color: var(--ginger-ink); text-decoration: underline; }
+  .days p { margin: .2rem 0 0; }
+  @media (max-width: 560px) { .days li { grid-template-columns: 1fr; gap: .2rem; } }
+</style>

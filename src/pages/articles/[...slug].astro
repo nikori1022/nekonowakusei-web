@@ -1,0 +1,77 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { SITE, u, formatDate, isoDate } from '../../site';
+
+export async function getStaticPaths() {
+  const all = await getCollection('articles');
+  return all.map((entry) => ({ params: { slug: entry.id }, props: { entry, all } }));
+}
+const { entry, all } = Astro.props;
+const { Content, headings } = await render(entry);
+const d = entry.data;
+const related = all.filter((a) => a.id !== entry.id && a.data.category === d.category).concat(all.filter((a) => a.id !== entry.id && a.data.category !== d.category)).slice(0, 3);
+const url = new URL(u(`/articles/${entry.id}/`), Astro.site).href;
+const root = new URL(u('/'), Astro.site).href;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.title,
+  description: d.description,
+  datePublished: isoDate(d.published),
+  dateModified: isoDate(d.updated ?? d.published),
+  mainEntityOfPage: url,
+  image: new URL(u('/og.png'), Astro.site).href,
+  inLanguage: 'ja',
+  author: { '@id': `${root}#org` },
+  publisher: { '@id': `${root}#org` },
+  ...(d.sources.length ? { citation: d.sources.map((s) => s.url) } : {}),
+};
+const toc = headings.filter((h) => h.depth === 2);
+---
+<Base title={d.title} description={d.description} type="article" crumbs={[{ name: 'お役立ち記事', path: '/articles/' }, { name: d.title, path: `/articles/${entry.id}/` }]} jsonLd={[ld]}>
+  <article class="wrap">
+    <header class="prose">
+      <p class="cat">{d.category}</p>
+      <h1>{d.title}</h1>
+      <p class="meta">
+        <time datetime={isoDate(d.published)}>{formatDate(d.published)}公開</time>
+        {d.updated && <> ／ <time datetime={isoDate(d.updated)}>{formatDate(d.updated)}更新</time></>}
+        ／ 文：{SITE.name}
+      </p>
+    </header>
+    {toc.length > 2 && (
+      <nav class="toc prose" aria-label="目次">
+        <p>この記事の内容</p>
+        <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+      </nav>
+    )}
+    <div class="prose body"><Content /></div>
+    {d.sources.length > 0 && (
+      <section class="prose sources" aria-labelledby="src-h">
+        <h2 id="src-h">参考にした情報</h2>
+        <ul>{d.sources.map((s) => <li><a href={s.url}>{s.name}</a></li>)}</ul>
+      </section>
+    )}
+    <aside class="prose visit">
+      <p><strong>北九州・小倉で保護猫に会えます。</strong>ねこの惑星では茶トラのテンとムギが暮らしています。<a href={u('/visit/')}>見学のご案内を見る</a></p>
+    </aside>
+    <section class="prose" aria-labelledby="rel-h">
+      <h2 id="rel-h">あわせて読みたい</h2>
+      <ul>{related.map((r) => <li><a href={u(`/articles/${r.id}/`)}>{r.data.title}</a></li>)}</ul>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .cat { color: var(--ginger-ink); font-weight: 700; margin: 1.5rem 0 .3rem; }
+  header h1 { font-size: clamp(1.75rem, 3.6vw, 2.4rem); }
+  .meta { font-size: .88rem; color: #5a6385; }
+  .toc { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.4rem; margin: 1.5rem 0 2rem; }
+  .toc p { font-weight: 700; margin-bottom: .3rem; }
+  .toc ol { margin: 0; }
+  .body :global(h2) { padding-top: .6rem; border-top: 3px solid var(--ginger); display: inline-block; }
+  .visit { margin-top: 3rem; background: var(--space); color: #e6eaf7; padding: 1.2rem 1.5rem; border-radius: 12px; }
+  .visit a { color: #ffc98f; }
+  .sources { font-size: .92rem; }
+</style>

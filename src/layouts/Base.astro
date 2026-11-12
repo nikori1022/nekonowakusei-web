@@ -1,0 +1,177 @@
+---
+import '../styles/global.css';
+import { SITE, u } from '../site';
+
+export interface Crumb { name: string; path: string }
+interface Props {
+  title: string;
+  description?: string;
+  type?: 'website' | 'article';
+  crumbs?: Crumb[];
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+const { title, description = SITE.description, type = 'website', crumbs = [], jsonLd = [], noindex = false } = Astro.props;
+
+const isHome = Astro.url.pathname === import.meta.env.BASE_URL || Astro.url.pathname === u('/');
+const fullTitle = isHome ? `${SITE.name}｜${SITE.tagline}` : `${title}｜${SITE.shortName}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(u('/og.png'), Astro.site).href;
+const siteRoot = new URL(u('/'), Astro.site).href;
+
+const org = {
+  '@context': 'https://schema.org',
+  '@type': ['AnimalShelter', 'LocalBusiness'],
+  '@id': `${siteRoot}#org`,
+  name: SITE.name,
+  alternateName: [SITE.shortName, 'ねこわく'],
+  url: siteRoot,
+  logo: new URL(u('/favicon.svg'), Astro.site).href,
+  image: ogImage,
+  description: SITE.description,
+  foundingDate: SITE.foundingDate,
+  areaServed: '北九州市',
+  ...(SITE.address
+    ? { address: { '@type': 'PostalAddress', streetAddress: SITE.address, addressLocality: '北九州市', addressRegion: '福岡県', addressCountry: 'JP' } }
+    : { address: { '@type': 'PostalAddress', addressLocality: '北九州市小倉北区', addressRegion: '福岡県', addressCountry: 'JP' } }),
+  ...(SITE.telephone ? { telephone: SITE.telephone } : {}),
+  email: SITE.email,
+  sameAs: SITE.sns.map((s) => s.url),
+  parentOrganization: { '@type': 'Organization', name: SITE.operator.name, url: SITE.operator.url },
+};
+const breadcrumb = crumbs.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [{ name: 'ホーム', path: '/' }, ...crumbs].map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.name,
+        item: new URL(u(c.path), Astro.site).href,
+      })),
+    }
+  : null;
+const schemas = [org, ...(breadcrumb ? [breadcrumb] : []), ...jsonLd];
+
+const nav = [
+  { name: 'テンとムギ', path: '/cats/' },
+  { name: '日記', path: '/diary/' },
+  { name: 'お役立ち記事', path: '/articles/' },
+  { name: '北九州の保護猫', path: '/kitakyushu/' },
+  { name: '施設について', path: '/about/' },
+];
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex" />}
+  <meta name="theme-color" content="#1e2a55" />
+  <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
+  <link rel="sitemap" href={u('/sitemap-index.xml')} />
+  <link rel="alternate" type="application/rss+xml" title={`${SITE.shortName}の新着`} href={u('/rss.xml')} />
+
+  <meta property="og:type" content={type} />
+  <meta property="og:site_name" content={SITE.name} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@nekowaku_kokura" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" />
+
+  {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+</head>
+<body>
+  <a class="skip" href="#main">本文へ移動</a>
+  <header class="site-head">
+    <div class="wrap head-row">
+      <a class="logo" href={u('/')} aria-label={`${SITE.name} トップへ`}>
+        <img src={u('/favicon.svg')} alt="" width="36" height="36" />
+        <span>ねこの惑星</span>
+      </a>
+      <nav aria-label="メインメニュー">
+        <ul>
+          {nav.map((n) => (
+            <li><a href={u(n.path)} aria-current={Astro.url.pathname.startsWith(u(n.path)) ? 'page' : undefined}>{n.name}</a></li>
+          ))}
+          <li><a class="visit" href={u('/visit/')}>見学・譲渡</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  {crumbs.length > 0 && (
+    <nav class="wrap crumbs" aria-label="パンくずリスト">
+      <ol>
+        <li><a href={u('/')}>ホーム</a></li>
+        {crumbs.map((c, i) => (
+          <li>{i === crumbs.length - 1 ? <span aria-current="page">{c.name}</span> : <a href={u(c.path)}>{c.name}</a>}</li>
+        ))}
+      </ol>
+    </nav>
+  )}
+
+  <main id="main">
+    <slot />
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap foot-grid">
+      <div>
+        <p class="foot-name">{SITE.name}</p>
+        <p>{SITE.area}<br />運営：<a href={SITE.operator.url}>{SITE.operator.name}</a></p>
+        <p>お問い合わせ：<a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+      </div>
+      <div>
+        <p class="foot-h">SNSで毎日の様子を発信中</p>
+        <ul class="sns">
+          {SITE.sns.map((s) => <li><a href={s.url} rel="me noopener">{s.name}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <p class="foot-h">サイト内</p>
+        <ul class="sns">
+          {nav.map((n) => <li><a href={u(n.path)}>{n.name}</a></li>)}
+          <li><a href={u('/visit/')}>見学・譲渡のご案内</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="wrap copy">© {new Date().getFullYear()} {SITE.name}</p>
+  </footer>
+</body>
+</html>
+
+<style>
+  .site-head { background: var(--space); color: #fff; }
+  .head-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .8rem; flex-wrap: wrap; }
+  .logo { display: flex; align-items: center; gap: .55rem; color: #fff; text-decoration: none; font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; letter-spacing: .08em; }
+  .site-head ul { display: flex; flex-wrap: wrap; gap: .2rem 1.2rem; list-style: none; margin: 0; padding: 0; font-size: .95rem; }
+  .site-head nav a { color: #e6eaf7; text-decoration: none; padding-block: .3rem; }
+  .site-head nav a:hover, .site-head nav a[aria-current='page'] { color: #fff; text-decoration: underline; text-decoration-color: var(--ginger); text-decoration-thickness: 3px; }
+  .site-head nav a.visit { background: var(--ginger); color: var(--space-deep); padding: .35rem .9rem; border-radius: 999px; font-weight: 700; }
+  .site-head nav a.visit:hover { text-decoration: none; background: #ffad5c; }
+
+  .crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: .3rem; padding: 1rem 0 0; margin: 0; font-size: .85rem; color: #5a6385; }
+  .crumbs li + li::before { content: '›'; margin-right: .3rem; }
+  .crumbs a { color: #5a6385; }
+
+  .site-foot { background: var(--space); color: #d6dcf0; margin-top: 6rem; padding: 3rem 0 1.5rem; font-size: .92rem; }
+  .site-foot a { color: #ffc98f; }
+  .foot-grid { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+  .foot-name { font-family: var(--font-head); font-size: 1.25rem; color: #fff; margin-bottom: .4rem; }
+  .foot-h { color: #fff; font-weight: 700; margin-bottom: .4rem; }
+  .sns { list-style: none; padding: 0; margin: 0; }
+  .copy { margin-top: 2rem; font-size: .8rem; color: #9aa4c8; }
+</style>

@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/Base.astro';
+import CatPlanet from '../components/CatPlanet.astro';
+import { getCollection } from 'astro:content';
+import { SITE, u, formatDate, isoDate } from '../site';
+
+const articles = (await getCollection('articles')).sort((a, b) => +b.data.published - +a.data.published);
+const diary = (await getCollection('diary')).sort((a, b) => +b.data.published - +a.data.published).slice(0, 3);
+
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.name,
+  url: new URL(u('/'), Astro.site).href,
+  inLanguage: 'ja',
+  publisher: { '@id': `${new URL(u('/'), Astro.site).href}#org` },
+};
+---
+<Base title={SITE.name} jsonLd={[website]}>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="place">北九州市小倉北区</p>
+        <h1>保護猫施設<br /><span class="name">ねこの惑星</span></h1>
+        <p class="lead">茶トラのテンとムギが暮らす、小さな惑星です。<br />就労継続支援B型のメンバーと一緒にお世話をしながら、殺処分ゼロを目指して活動しています。</p>
+        <p class="actions">
+          <a class="btn" href={u('/visit/')}>見学を申し込む</a>
+          <a class="text-link" href={u('/cats/')}>テンとムギに会う</a>
+        </p>
+      </div>
+      <div class="hero-art"><CatPlanet /></div>
+    </div>
+  </section>
+
+  <section class="wrap cats" aria-labelledby="cats-h">
+    <h2 id="cats-h">この惑星の住人</h2>
+    <div class="cat-row">
+      <a class="cat" href={u('/cats/#ten')}>
+        <span class="cat-name">テン</span>
+        <span class="cat-meta">茶トラ・オス</span>
+      </a>
+      <a class="cat" href={u('/cats/#mugi')}>
+        <span class="cat-name">ムギ</span>
+        <span class="cat-meta">茶トラ・オス</span>
+      </a>
+    </div>
+    <p class="note">2匹の毎日はTikTokで発信中。フォロワーは3,000人を超えました。<a href={SITE.sns[0].url}>TikTokを見る</a></p>
+  </section>
+
+  <section class="wrap split" aria-labelledby="diary-h">
+    <div>
+      <h2 id="diary-h">テン・ムギ日記</h2>
+      <ul class="list">
+        {diary.map((d) => (
+          <li>
+            <time datetime={isoDate(d.data.published)}>{formatDate(d.data.published)}</time>
+            <a href={u(`/diary/${d.id}/`)}>{d.data.title}</a>
+          </li>
+        ))}
+      </ul>
+      <a class="text-link" href={u('/diary/')}>日記をすべて読む</a>
+    </div>
+    <div>
+      <h2 id="art-h">保護猫のお役立ち記事</h2>
+      <ul class="list">
+        {articles.slice(0, 5).map((a) => (
+          <li>
+            <span class="cat-tag">{a.data.category}</span>
+            <a href={u(`/articles/${a.id}/`)}>{a.data.title}</a>
+          </li>
+        ))}
+      </ul>
+      <a class="text-link" href={u('/articles/')}>記事をすべて読む</a>
+    </div>
+  </section>
+
+  <section class="mission" aria-labelledby="mission-h">
+    <div class="wrap prose">
+      <h2 id="mission-h">猫のお世話が、誰かの仕事になる場所</h2>
+      <p>ねこの惑星は、就労継続支援B型事業所「ラシクラボ小倉」「ラシクラボ小倉鍛冶町」の利用者さんと職員が一緒に運営している保護猫施設です。ごはん、トイレ掃除、遊び相手、SNSでの発信、手書きの「ねこわく新聞」づくり。猫たちの毎日を支える仕事を、みんなで分け合っています。</p>
+      <p><a href={u('/about/')}>ねこの惑星について詳しく読む</a></p>
+    </div>
+  </section>
+
+  <section class="wrap visit-cta" aria-labelledby="visit-h">
+    <h2 id="visit-h">テンとムギに会いに来ませんか</h2>
+    <p>見学は随時受け付けています。猫が好きな方、お世話をしてみたい方、里親を考えている方、どなたでも歓迎です。</p>
+    <a class="btn" href={u('/visit/')}>見学・譲渡のご案内</a>
+  </section>
+</Base>
+
+<style>
+  .hero { background: var(--space); color: #fff; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 2rem; padding-block: clamp(2.5rem, 7vw, 5.5rem); }
+  .place { color: var(--mint); font-weight: 700; letter-spacing: .12em; margin-bottom: .5rem; }
+  .hero h1 { font-size: clamp(2rem, 4.6vw, 3rem); line-height: 1.25; margin-bottom: 1.2rem; }
+  .hero .name { display: inline-block; font-size: 1.6em; color: var(--ginger); letter-spacing: .06em; }
+  .lead { font-size: 1.08rem; color: #e6eaf7; max-width: 30em; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.2rem; margin-top: 1.8rem; }
+  .hero .text-link { color: #fff; }
+  .hero-art { justify-self: center; width: min(420px, 100%); }
+
+  .btn { display: inline-block; background: var(--ginger); color: var(--space-deep); font-weight: 700; padding: .8rem 1.6rem; border-radius: 999px; text-decoration: none; }
+  .btn:hover { background: #ffad5c; }
+  .text-link { font-weight: 700; }
+
+  .cats { padding-top: 1rem; }
+  .cat-row { display: grid; grid-template-columns: repeat(2, minmax(0, 18rem)); gap: 1.5rem; }
+  .cat { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; aspect-ratio: 1; padding: 1.4rem; margin-top: 1.6rem; border-radius: 50% 50% 46% 46% / 54% 54% 46% 46%; background: radial-gradient(circle at 35% 30%, #ffb466, var(--ginger) 60%, #d4741a); color: var(--space-deep); text-decoration: none; }
+  .cat::before, .cat::after { content: ''; position: absolute; top: -1.3rem; width: 20%; aspect-ratio: 1; background: #f6a24c; clip-path: polygon(50% 0, 100% 100%, 0 100%); z-index: -1; }
+  .cat::before { left: 13%; transform: rotate(-18deg); }
+  .cat::after { right: 13%; transform: rotate(18deg); }
+  .cat { isolation: isolate; }
+  .cat-name { font-family: var(--font-head); font-size: var(--fs-4); font-weight: 700; line-height: 1; }
+  .cat-meta { font-size: .95rem; }
+  .cat:hover { outline: 4px solid var(--space); outline-offset: 4px; }
+  .note { margin-top: 1.4rem; }
+
+  .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1rem 4rem; }
+  .list { list-style: none; padding: 0; }
+  .list li { padding: .7rem 0; border-bottom: 1px solid var(--line); display: grid; gap: .1rem; }
+  .list time, .cat-tag { font-size: .82rem; color: #5a6385; }
+  .list a { color: var(--space-deep); text-decoration: none; font-weight: 700; }
+  .list a:hover { color: var(--ginger-ink); text-decoration: underline; }
+
+  .mission { margin-top: 5rem; padding-block: 1rem 3rem; background: linear-gradient(var(--moon), #ebeffa); }
+  .visit-cta { margin-top: 4rem; }
+
+  @media (max-width: 760px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-art { width: 70%; order: -1; }
+    .cat-row { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .cat-name { font-size: var(--fs-3); }
+  }
+</style>

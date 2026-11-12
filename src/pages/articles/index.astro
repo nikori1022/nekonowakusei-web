@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { u, formatDate, isoDate } from '../../site';
+
+const articles = (await getCollection('articles')).sort((a, b) => +b.data.published - +a.data.published);
+const categories = [...new Set(articles.map((a) => a.data.category))];
+---
+<Base title="保護猫のお役立ち記事" description="保護猫を迎える準備、新しい家に慣れるまでの過ごし方、室内飼いのコツ、北九州の保護猫事情など、保護猫施設ねこの惑星がまとめたお役立ち記事の一覧です。" crumbs={[{ name: 'お役立ち記事', path: '/articles/' }]}>
+  <div class="wrap">
+    <h1>保護猫のお役立ち記事</h1>
+    <p class="prose">保護猫を迎える前に知っておきたいこと、一緒に暮らすコツ、北九州の情報をまとめています。</p>
+    {categories.map((c) => (
+      <section aria-labelledby={`c-${c}`}>
+        <h2 id={`c-${c}`}>{c}</h2>
+        <ul class="arts">
+          {articles.filter((a) => a.data.category === c).map((a) => (
+            <li>
+              <a href={u(`/articles/${a.id}/`)}>{a.data.title}</a>
+              <p>{a.data.description}</p>
+              <time datetime={isoDate(a.data.published)}>{formatDate(a.data.published)}</time>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .arts { list-style: none; padding: 0; max-width: 46rem; }
+  .arts li { padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .arts a { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-1); color: var(--space-deep); text-decoration: none; }
+  .arts a:hover { color: var(--ginger-ink); text-decoration: underline; }
+  .arts p { margin: .3rem 0; }
+  .arts time { font-size: .82rem; color: #5a6385; }
+</style>

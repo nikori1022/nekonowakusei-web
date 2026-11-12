@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { SITE, u, formatDate, isoDate } from '../../site';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('diary')).sort((a, b) => +a.data.published - +b.data.published);
+  return all.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, prev: all[i - 1], next: all[i + 1] } }));
+}
+const { entry, prev, next } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const root = new URL(u('/'), Astro.site).href;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: d.title,
+  description: d.description,
+  datePublished: isoDate(d.published),
+  mainEntityOfPage: new URL(u(`/diary/${entry.id}/`), Astro.site).href,
+  image: new URL(u('/og.png'), Astro.site).href,
+  author: { '@id': `${root}#org` },
+  publisher: { '@id': `${root}#org` },
+};
+---
+<Base title={`${d.title}｜テン・ムギ日記`} description={d.description} type="article" crumbs={[{ name: '日記', path: '/diary/' }, { name: d.title, path: `/diary/${entry.id}/` }]} jsonLd={[ld]}>
+  <article class="wrap prose">
+    <p class="meta"><time datetime={isoDate(d.published)}>{formatDate(d.published)}</time>{d.cats.length > 0 && <>／登場：{d.cats.join('・')}</>}</p>
+    <h1>{d.title}</h1>
+    <Content />
+    <p class="more">動画はTikTokで毎日更新中です。<a href={SITE.sns[0].url}>TikTokを見る</a></p>
+    <nav class="pager" aria-label="前後の日記">
+      {prev ? <a href={u(`/diary/${prev.id}/`)}>前の日記：{prev.data.title}</a> : <span />}
+      {next && <a href={u(`/diary/${next.id}/`)}>次の日記：{next.data.title}</a>}
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .meta { margin-top: 1.5rem; color: #5a6385; font-size: .9rem; }
+  .more { margin-top: 2rem; }
+  .pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .95rem; }
+</style>

@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, u } from '../site';
+---
+<Base title="ねこの惑星について｜就労支援×保護猫" description="保護猫施設ねこの惑星は、就労継続支援B型事業所ラシクラボ小倉・ラシクラボ小倉鍛冶町の利用者さんと一緒に運営する北九州市の保護猫施設です。活動内容と想いを紹介します。" crumbs={[{ name: '施設について', path: '/about/' }]}>
+  <article class="wrap prose">
+    <h1>ねこの惑星について</h1>
+    <p>ねこの惑星は、北九州市小倉北区にある保護猫施設です。2022年6月に運営を始めました。目標は、行き場のない猫が命を落とさずにすむ地域にすること、つまり殺処分ゼロです。</p>
+
+    <h2>就労支援と保護猫活動をひとつに</h2>
+    <p>運営しているのは、就労継続支援B型事業所の「ラシクラボ小倉」と「ラシクラボ小倉鍛冶町」です。事業所の利用者さんが、猫のお世話を仕事のひとつとして担っています。</p>
+    <ul>
+      <li>ごはんと水の用意、トイレ掃除、ブラッシング</li>
+      <li>遊び相手と、体調の小さな変化に気づくための観察</li>
+      <li>TikTok・YouTube・ThreadsなどSNSでの発信、ライブ配信</li>
+      <li>手書きの「ねこわく新聞」づくり、グッズの制作</li>
+    </ul>
+    <p>猫にとっては毎日たくさんの人に見守られる環境になり、利用者さんにとっては「誰かの役に立っている」と実感できる仕事になります。</p>
+
+    <h2>大切にしていること</h2>
+    <h3>終生、責任を持つ</h3>
+    <p>施設で暮らす猫は、譲渡が決まるまで、決まらなくても、最後まで責任を持ってお世話します。</p>
+    <h3>完全室内飼い</h3>
+    <p>事故や感染症から猫を守るため、施設の猫は室内だけで暮らしています。里親さんにも室内飼いをお願いしています。<a href={u('/articles/kanzen-shitsunai/')}>室内飼いのすすめ</a></p>
+    <h3>地域とつながる</h3>
+    <p>見学はいつでも歓迎です。猫と触れ合える場所として、地域の方にも気軽に立ち寄ってもらえる施設を目指しています。</p>
+
+    <h2>施設の概要</h2>
+    <table>
+      <tbody>
+        <tr><th scope="row">名称</th><td>{SITE.name}（略称：ねこわく）</td></tr>
+        <tr><th scope="row">所在地</th><td>{SITE.address || SITE.area}</td></tr>
+        <tr><th scope="row">運営開始</th><td>2022年6月</td></tr>
+        <tr><th scope="row">運営</th><td><a href={SITE.operator.url}>{SITE.operator.name}</a></td></tr>
+        <tr><th scope="row">暮らしている猫</th><td><a href={u('/cats/')}>テン、ムギ（茶トラ・オス）</a></td></tr>
+        <tr><th scope="row">お問い合わせ</th><td><a href={`mailto:${SITE.email}`}>{SITE.email}</a></td></tr>
+      </tbody>
+    </table>
+    <p>活動の背景は<a href={u('/articles/shuro-shien-hogoneko/')}>就労継続支援B型×保護猫の記事</a>でも詳しく紹介しています。</p>
+  </article>
+</Base>

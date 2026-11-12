@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, u } from '../site';
+
+const faqs = [
+  { q: '見学に予約は必要ですか？', a: '猫の体調や施設の状況に合わせてご案内するため、事前にメールでご連絡ください。日時を相談して決めます。' },
+  { q: '見学に費用はかかりますか？', a: '見学は無料です。' },
+  { q: '子どもと一緒に見学できますか？', a: 'はい、ご家族での見学も歓迎です。猫が驚かないよう、大きな声を出さない・急に触らないなど、職員の案内に沿ってお願いします。' },
+  { q: '里親になるための条件はありますか？', a: '完全室内飼いができること、ご家族全員が同意していること、最後まで飼い続けられることを大切にしています。詳しい条件は面談のときにご説明します。' },
+  { q: '猫のお世話をボランティアとして手伝えますか？', a: 'お手伝いの形は施設の状況によって変わるため、まずはメールでご相談ください。' },
+];
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const mail = `mailto:${SITE.email}?subject=${encodeURIComponent('見学の申し込み')}&body=${encodeURIComponent('お名前：\n希望日時（第2希望まで）：\n人数：\nご質問など：')}`;
+---
+<Base title="見学・譲渡のご案内" description="北九州・小倉の保護猫施設ねこの惑星の見学と譲渡（里親）のご案内。申し込み方法、当日の流れ、よくある質問をまとめています。見学は随時受け付けています。" crumbs={[{ name: '見学・譲渡', path: '/visit/' }]} jsonLd={[faqLd]}>
+  <article class="wrap prose">
+    <h1>見学・譲渡のご案内</h1>
+    <p>テンとムギに会ってみたい方、猫のお世話を体験してみたい方、里親を考えている方。見学は随時受け付けています。</p>
+
+    <h2>見学の流れ</h2>
+    <ol>
+      <li><strong>メールで申し込み</strong>：お名前、希望日時、人数を送ってください。</li>
+      <li><strong>日時の確定</strong>：施設から返信して日時を決めます。</li>
+      <li><strong>見学</strong>：猫たちの暮らしを見たり、一緒に遊んだりできます。</li>
+    </ol>
+    <p><a class="btn" href={mail}>メールで見学を申し込む</a></p>
+    <p class="small">宛先：{SITE.email}</p>
+    {SITE.openingHours && <p>見学受付時間：{SITE.openingHours}</p>}
+
+    <h2>譲渡（里親）について</h2>
+    <p>譲渡を希望される場合は、見学のあとに面談を行い、飼育環境やご家族の状況をお聞きします。猫と里親さんの両方が幸せになれるよう、丁寧に進めます。</p>
+    <p>北九州市動物愛護センターからの譲渡や、市の支援制度については<a href={u('/kitakyushu/')}>北九州の保護猫ガイド</a>にまとめています。迎える前の準備は<a href={u('/articles/hogoneko-junbi/')}>準備リストの記事</a>が参考になります。</p>
+
+    <h2>よくある質問</h2>
+    <dl class="faq">
+      {faqs.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+    </dl>
+  </article>
+</Base>
+
+<style>
+  .btn { display: inline-block; background: var(--ginger); color: var(--space-deep); font-weight: 700; padding: .8rem 1.6rem; border-radius: 999px; text-decoration: none; }
+  .btn:hover { background: #ffad5c; }
+  .small { font-size: .9rem; color: #5a6385; }
+  .faq dt { font-weight: 700; margin-top: 1.4rem; }
+  .faq dt::before { content: 'Q. '; color: var(--ginger-ink); }
+  .faq dd { margin: .3rem 0 0; padding-left: 1.6em; }
+</style>

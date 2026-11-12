@@ -1,0 +1,57 @@
+---
+// 茶トラ猫の顔をした惑星。リングの上を星がひと回りする（読み込み時に1回だけ）。
+interface Props { size?: number; animate?: boolean; title?: string }
+const { size = 420, animate = true, title = '茶トラ猫の顔をした惑星のイラスト' } = Astro.props;
+---
+<svg class:list={['planet', { animate }]} width={size} height={size} viewBox="0 0 400 400" role="img" aria-label={title}>
+  <defs>
+    <clipPath id="face"><circle cx="200" cy="205" r="118" /></clipPath>
+  </defs>
+  <!-- 耳 -->
+  <path d="M104 132 L112 52 L170 98 Z" fill="#ee8e2c" />
+  <path d="M296 132 L288 52 L230 98 Z" fill="#ee8e2c" />
+  <path d="M118 118 L123 74 L156 100 Z" fill="#f7c48c" />
+  <path d="M282 118 L277 74 L244 100 Z" fill="#f7c48c" />
+  <!-- リング（後ろ側） -->
+  <ellipse cx="200" cy="215" rx="188" ry="46" fill="none" stroke="#7fd3bf" stroke-width="7" opacity=".55" transform="rotate(-14 200 215)" />
+  <!-- 顔 = 惑星 -->
+  <circle cx="200" cy="205" r="118" fill="#ee8e2c" />
+  <g clip-path="url(#face)" fill="#d4741a">
+    <path d="M150 80 q12 40 0 70 q-6 -30 -22 -44 z" />
+    <path d="M200 80 q10 44 0 72 q-10 -28 0 -72 z" />
+    <path d="M250 80 q-12 40 0 70 q6 -30 22 -44 z" />
+    <path d="M82 200 q40 -6 62 8 q-36 6 -62 -8 z" />
+    <path d="M318 200 q-40 -6 -62 8 q36 6 62 -8 z" />
+    <path d="M84 250 q40 -8 60 2 q-34 10 -60 -2 z" />
+    <path d="M316 250 q-40 -8 -60 2 q34 10 60 -2 z" />
+  </g>
+  <ellipse cx="200" cy="262" rx="70" ry="50" fill="#fbe3c4" />
+  <!-- 目（にっこり） -->
+  <path d="M146 205 q18 -20 36 0" fill="none" stroke="#141d3f" stroke-width="7" stroke-linecap="round" />
+  <path d="M218 205 q18 -20 36 0" fill="none" stroke="#141d3f" stroke-width="7" stroke-linecap="round" />
+  <!-- 鼻と口 -->
+  <path d="M190 238 h20 l-10 11 z" fill="#c4553a" />
+  <path d="M200 249 q-4 16 -20 14 M200 249 q4 16 20 14" fill="none" stroke="#141d3f" stroke-width="5" stroke-linecap="round" />
+  <!-- ひげ -->
+  <g stroke="#141d3f" stroke-width="3" stroke-linecap="round" opacity=".7">
+    <path d="M138 250 h-50 M140 262 l-46 10" />
+    <path d="M262 250 h50 M260 262 l46 10" />
+  </g>
+  <!-- リング（前側） -->
+  <path d="M14 254 Q200 320 386 176" fill="none" stroke="#7fd3bf" stroke-width="7" stroke-linecap="round" transform="rotate(0)" />
+  <!-- 周回する星 -->
+  <g class="orbit">
+    <path class="star" d="M0 -11 L3 -3 L11 -3 L5 2 L7 10 L0 5 L-7 10 L-5 2 L-11 -3 L-3 -3 Z" fill="#ffffff" />
+  </g>
+  <!-- 背景の小さな星 -->
+  <g fill="#ffffff">
+    <circle cx="40" cy="60" r="3" /><circle cx="360" cy="70" r="2.5" /><circle cx="340" cy="340" r="3" /><circle cx="60" cy="350" r="2" /><circle cx="370" cy="250" r="2" />
+  </g>
+</svg>
+
+<style>
+  .planet { overflow: visible; }
+  .orbit { offset-path: path('M14 254 Q200 320 386 176'); offset-distance: 100%; offset-rotate: 0deg; }
+  .animate .orbit { animation: orbit 2.4s cubic-bezier(.45, .05, .25, 1) .3s both; }
+  @keyframes orbit { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+</style>

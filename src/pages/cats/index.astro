@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { SITE, u, formatDate, isoDate } from '../../site';
+
+const diary = (await getCollection('diary')).sort((a, b) => +b.data.published - +a.data.published);
+const of = (name: 'テン' | 'ムギ') => diary.filter((d) => d.data.cats.includes(name)).slice(0, 3);
+
+// TODO: 誕生日（推定）・保護された時期・好きなもの は施設で確認して追記
+const cats = [
+  { id: 'ten', name: 'テン', text: 'ねこの惑星の茶トラ兄弟のひとり。施設の様子はTikTokライブでもたびたび登場しています。', posts: of('テン') },
+  { id: 'mugi', name: 'ムギ', text: '新しいおもちゃには全力で飛びつくタイプ。夏はこまめに水を飲んで、暑さを上手に乗り切っています。', posts: of('ムギ') },
+];
+const ld = cats.map((c) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Thing',
+  name: `${c.name}（${SITE.shortName}の茶トラ猫）`,
+  description: c.text,
+  url: new URL(u(`/cats/#${c.id}`), Astro.site).href,
+}));
+---
+<Base title="テンとムギ｜茶トラ猫の兄弟" description="北九州・小倉の保護猫施設ねこの惑星で暮らす、茶トラのオス猫「テン」と「ムギ」の紹介ページです。性格や日々の様子、動画へのリンクをまとめています。" crumbs={[{ name: 'テンとムギ', path: '/cats/' }]} jsonLd={ld}>
+  <div class="wrap">
+    <h1>テンとムギ</h1>
+    <p class="prose">ねこの惑星で暮らしているのは、茶トラのオス2匹。名前はテンとムギです。ちなみに茶トラ猫にオスが多いのは、毛色を決める遺伝子の仕組みによるもの。<a href={u('/articles/chatora-osu/')}>理由はこちらの記事で解説しています</a>。</p>
+
+    {cats.map((c) => (
+      <section id={c.id} class="cat-sec" aria-labelledby={`${c.id}-h`}>
+        <div class="badge" aria-hidden="true">{c.name}</div>
+        <div class="prose">
+          <h2 id={`${c.id}-h`}>{c.name}</h2>
+          <table>
+            <tbody>
+              <tr><th scope="row">毛色</th><td>茶トラ</td></tr>
+              <tr><th scope="row">性別</th><td>オス</td></tr>
+              <tr><th scope="row">暮らしている場所</th><td>保護猫施設 ねこの惑星（北九州市小倉北区）</td></tr>
+            </tbody>
+          </table>
+          <p>{c.text}</p>
+          {c.posts.length > 0 && (
+            <>
+              <h3>{c.name}の最近の日記</h3>
+              <ul>
+                {c.posts.map((p) => <li><time datetime={isoDate(p.data.published)}>{formatDate(p.data.published)}</time> <a href={u(`/diary/${p.id}/`)}>{p.data.title}</a></li>)}
+              </ul>
+            </>
+          )}
+        </div>
+      </section>
+    ))}
+
+    <section class="prose">
+      <h2>動画で会えます</h2>
+      <p>2匹の毎日はTikTokとYouTubeで公開しています。過去のTikTokライブのアーカイブもYouTubeで見られます。</p>
+      <ul>
+        {SITE.sns.slice(0, 3).map((s) => <li><a href={s.url}>{s.name}で見る</a></li>)}
+      </ul>
+      <p>実際に会ってみたい方は<a href={u('/visit/')}>見学のご案内</a>をどうぞ。</p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .cat-sec { display: grid; grid-template-columns: 12rem 1fr; gap: 2.5rem; align-items: start; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); scroll-margin-top: 1rem; }
+  .cat-sec h2 { margin-top: 0; }
+  .badge { aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffb466, var(--ginger) 60%, #d4741a); font-family: var(--font-head); font-weight: 700; font-size: var(--fs-4); color: var(--space-deep); }
+  @media (max-width: 640px) { .cat-sec { grid-template-columns: 1fr; } .badge { width: 9rem; } }
+</style>
