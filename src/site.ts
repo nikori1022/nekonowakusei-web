@@ -27,6 +27,8 @@ export const SITE = {
     { name: 'Instagram', url: 'https://www.instagram.com/nekowaku_kokura/' },
   ],
   shop: 'https://haru64.base.shop/',
+  // Google アナリティクス 4 の測定ID（ねこの惑星の Google アカウントで管理）
+  gaId: 'G-WXT5FWSFGY',
 };
 
 /** base パスを付けた内部リンクを返す */
