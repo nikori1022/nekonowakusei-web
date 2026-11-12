@@ -17,7 +17,7 @@ const faqLd = {
 const mail = `mailto:${SITE.email}?subject=${encodeURIComponent('見学の申し込み')}&body=${encodeURIComponent('お名前：\n希望日時（第2希望まで）：\n人数：\nご質問など：')}`;
 ---
 <Base title="見学・譲渡のご案内" description="北九州・小倉の保護猫施設ねこの惑星の見学と譲渡（里親）のご案内。申し込み方法、当日の流れ、よくある質問をまとめています。見学は随時受け付けています。" crumbs={[{ name: '見学・譲渡', path: '/visit/' }]} jsonLd={[faqLd]}>
-  <article class="wrap prose">
+  <article class="narrow prose page">
     <h1>見学・譲渡のご案内</h1>
     <p>テンとムギに会ってみたい方、猫のお世話を体験してみたい方、里親を考えている方。見学は随時受け付けています。</p>
 
@@ -43,9 +43,7 @@ const mail = `mailto:${SITE.email}?subject=${encodeURIComponent('見学の申し
 </Base>
 
 <style>
-  .btn { display: inline-block; background: var(--ginger); color: var(--space-deep); font-weight: 700; padding: .8rem 1.6rem; border-radius: 999px; text-decoration: none; }
-  .btn:hover { background: #ffad5c; }
-  .small { font-size: .9rem; color: #5a6385; }
+  .small { font-size: .9rem; color: var(--ink-soft); }
   .faq dt { font-weight: 700; margin-top: 1.4rem; }
   .faq dt::before { content: 'Q. '; color: var(--ginger-ink); }
   .faq dd { margin: .3rem 0 0; padding-left: 1.6em; }
