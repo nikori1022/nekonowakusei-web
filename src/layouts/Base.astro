@@ -108,7 +108,7 @@ const nav = [
   <a class="skip" href="#main">本文へ移動</a>
   <header class="site-head">
     <div class="wrap head-row">
-      <a class="logo" href={u('/')} aria-label={`${SITE.name} トップへ`}>
+      <a class="logo" href={u('/')}>
         <img src={u('/favicon.svg')} alt="" width="40" height="40" />
         <span class="logo-text"><small>北九州・小倉の保護猫施設</small>ねこの惑星</span>
       </a>
@@ -181,7 +181,7 @@ const nav = [
   .site-head nav a { display: block; color: var(--ink); text-decoration: none; padding: .45rem .85rem; border-radius: 999px; font-weight: 500; }
   .site-head nav a:hover { background: #f3f0fc; }
   .site-head nav a[aria-current='page'] { background: var(--ginger-soft); color: var(--ginger-ink); font-weight: 700; }
-  .visit { flex: none; background: var(--ginger); color: #fff; font-weight: 700; font-size: .92rem; padding: .55rem 1.1rem; border-radius: 999px; text-decoration: none; }
+  .visit { flex: none; background: var(--ginger); color: var(--ink); font-weight: 700; font-size: .92rem; padding: .55rem 1.1rem; border-radius: 999px; text-decoration: none; }
   .visit:hover { background: #e47f29; }
   @media (max-width: 900px) {
     .head-row { flex-wrap: wrap; row-gap: .3rem; }
