@@ -16,7 +16,7 @@ const counts = Object.fromEntries(topicNames.map((n) => [n, articles.filter((a) 
     </header>
     <TopicNav counts={counts} />
     <div class="grid">
-      {articles.map((a) => <ArticleCard id={a.id} {...a.data} />)}
+      {articles.map((a) => <ArticleCard level={2} id={a.id} {...a.data} />)}
     </div>
   </div>
 </Base>

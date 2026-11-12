@@ -12,11 +12,11 @@
   --ginger-soft: #ffeedd;
 
   /* トピックごとのパステル（地 / 濃いめ） */
-  --peach: #ffe9dc;  --peach-deep: #c8622a;
-  --mint: #dcf3ea;   --mint-deep: #2b7d62;
-  --lilac: #ece7fd;  --lilac-deep: #6b55c4;
-  --sky: #e1effd;    --sky-deep: #2f6aa6;
-  --rose: #fde6ee;   --rose-deep: #b4446c;
+  --peach: #ffe9dc;  --peach-deep: #9e4214;
+  --mint: #dcf3ea;   --mint-deep: #1d6650;
+  --lilac: #ece7fd;  --lilac-deep: #5540ad;
+  --sky: #e1effd;    --sky-deep: #225788;
+  --rose: #fde6ee;   --rose-deep: #932b53;
 
   --night: #2a3363;        /* 惑星の夜空（ヒーローのイラスト背景にだけ使う） */
 
@@ -93,7 +93,7 @@ a:hover { text-decoration-thickness: 2px; }
 .prose strong { background: linear-gradient(transparent 62%, #ffe2c4 62%); }
 
 /* ボタン */
-.btn { display: inline-flex; align-items: center; gap: .5em; background: var(--ginger); color: #fff; font-weight: 700; padding: .85rem 1.7rem; border-radius: 999px; text-decoration: none; box-shadow: 0 6px 0 #d9762a; transition: transform .12s, box-shadow .12s; }
+.btn { display: inline-flex; align-items: center; gap: .5em; background: var(--ginger); color: var(--ink); font-weight: 700; padding: .85rem 1.7rem; border-radius: 999px; text-decoration: none; box-shadow: 0 6px 0 #d9762a; transition: transform .12s, box-shadow .12s; }
 .btn:hover { transform: translateY(2px); box-shadow: 0 4px 0 #d9762a; text-decoration: none; }
 .btn:active { transform: translateY(6px); box-shadow: 0 0 0 #d9762a; }
 .btn-ghost { display: inline-flex; align-items: center; gap: .4em; font-weight: 700; color: var(--ink); text-decoration: none; padding: .8rem 1.3rem; border-radius: 999px; background: var(--paper); border: 2px solid var(--line); }
