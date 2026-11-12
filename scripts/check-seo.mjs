@@ -10,7 +10,7 @@ const files = [];
   for (const f of readdirSync(d)) {
     const p = join(d, f);
     if (statSync(p).isDirectory()) walk(p);
-    else if (p.endsWith('.html')) files.push(p);
+    else if (p.endsWith('.html') && !/google[0-9a-f]+\.html$/.test(f)) files.push(p);
   }
 })(DIST);
 
