@@ -119,7 +119,7 @@ const nav = [
           ))}
         </ul>
       </nav>
-      <a class="visit" href={u('/visit/')}>見学・譲渡</a>
+      <a class="visit" href={u('/visit/')}>見学のご案内</a>
     </div>
   </header>
 
@@ -139,13 +139,6 @@ const nav = [
   </main>
 
   <footer class="site-foot">
-    <div class="wrap foot-cta">
-      <div>
-        <p class="foot-cta-title">テンとムギに会いに来ませんか</p>
-        <p>見学は随時受け付けています。猫好きさん、里親を考えている方、どなたでも歓迎です。</p>
-      </div>
-      <a class="btn" href={u('/visit/')}>見学を申し込む</a>
-    </div>
     <div class="wrap foot-grid">
       <div>
         <p class="foot-name"><img src={u('/favicon.svg')} alt="" width="32" height="32" />{SITE.name}</p>
@@ -162,7 +155,7 @@ const nav = [
         <p class="foot-h">サイト内</p>
         <ul class="links">
           {nav.map((n) => <li><a href={u(n.path)}>{n.name}</a></li>)}
-          <li><a href={u('/visit/')}>見学・譲渡のご案内</a></li>
+          <li><a href={u('/visit/')}>見学のご案内</a></li>
         </ul>
       </div>
     </div>
@@ -194,10 +187,7 @@ const nav = [
   .crumbs li + li::before { content: '›'; margin-right: .3rem; }
   .crumbs a { color: var(--ink-soft); }
 
-  .site-foot { margin-top: clamp(4rem, 9vw, 7rem); background: var(--paper); border-top: 1px solid var(--line); font-size: .92rem; }
-  .foot-cta { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; transform: translateY(-50%); background: linear-gradient(120deg, var(--peach), var(--lilac)); padding: 1.6rem 2rem; border-radius: var(--r-lg); }
-  .foot-cta p { margin: 0; }
-  .foot-cta-title { font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; margin-bottom: .2rem !important; }
+  .site-foot { margin-top: clamp(4rem, 9vw, 7rem); padding-top: 2.5rem; background: var(--paper); border-top: 1px solid var(--line); font-size: .92rem; }
   .foot-grid { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); padding-bottom: 1rem; }
   .foot-name { display: flex; align-items: center; gap: .5rem; font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; margin-bottom: .5rem; }
   .foot-h { font-weight: 700; margin-bottom: .6rem; }
