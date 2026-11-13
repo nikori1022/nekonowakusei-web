@@ -20,6 +20,8 @@ const fail = (f, msg) => { problems++; console.log(`✗ ${f}: ${msg}`); };
 
 for (const f of files) {
   const html = readFileSync(f, 'utf8');
+  // 転送用ページ（astro.config の redirects）は中身がないので対象外
+  if (/<meta http-equiv="refresh"/.test(html)) continue;
   const is404 = f.endsWith('404.html');
   const title = html.match(/<title>(.*?)<\/title>/)?.[1];
   const desc = html.match(/<meta name="description" content="(.*?)"/)?.[1];

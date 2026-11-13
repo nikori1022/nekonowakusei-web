@@ -13,4 +13,6 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [sitemap({ i18n: undefined, changefreq: 'weekly' })],
   build: { format: 'directory' },
+  // 一般見学をやめたので、旧「見学のご案内」は利用者募集ページへ転送
+  redirects: { '/visit/': `${BASE_PATH.replace(/\/$/, '')}/join/` },
 });
