@@ -2,6 +2,8 @@
 title: 新年度もテンとムギと一緒に
 description: 今日から新年度。ラシクラボではテンとムギと一緒に保護猫活動を続けています。ねこわく新聞も作成中です。
 published: 2026-03-31
+cover: ../../assets/cats/mugi-0561.jpg
+coverAlt: 廊下でこちらに歩いてくるムギ
 cats: [テン, ムギ]
 ---
 

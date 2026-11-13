@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import CatPlanet from '../components/CatPlanet.astro';
+import { Image, Picture } from 'astro:assets';
+import { PHOTOS } from '../photos';
 import ArticleCard from '../components/ArticleCard.astro';
 import TopicIcon from '../components/TopicIcon.astro';
 import { getCollection } from 'astro:content';
@@ -34,6 +36,9 @@ const website = {
       </div>
       <div class="hero-art">
         <div class="sky"><CatPlanet /></div>
+        <figure class="hero-photo">
+          <Picture src={PHOTOS.both.src} alt={PHOTOS.both.alt} widths={[240, 360, 540]} sizes="(max-width: 860px) 40vw, 16rem" formats={['avif', 'webp']} loading="eager" />
+        </figure>
       </div>
     </div>
   </section>
@@ -58,11 +63,11 @@ const website = {
     </div>
     <div class="cats">
       <a class="cat tone-peach" href={u('/cats/#ten')}>
-        <span class="face" aria-hidden="true"></span>
+        <Image class="face" src={PHOTOS.tenFace.src} alt="" width={180} height={180} fit="cover" position="attention" format="webp" />
         <span class="cat-body"><span class="cat-name">テン</span><span>TikTokライブの常連。施設の看板猫です。</span></span>
       </a>
       <a class="cat tone-mint" href={u('/cats/#mugi')}>
-        <span class="face" aria-hidden="true"></span>
+        <Image class="face" src={PHOTOS.mugiFace.src} alt="" width={180} height={180} fit="cover" position="attention" format="webp" />
         <span class="cat-body"><span class="cat-name">ムギ</span><span>新しいおもちゃには全力で飛びつくタイプ。</span></span>
       </a>
       <a class="cat tone-lilac follow" href={SITE.sns[0].url}>
@@ -91,6 +96,7 @@ const website = {
         <li>
           <time datetime={isoDate(d.data.published)}><span>{d.data.published.getMonth() + 1}/{d.data.published.getDate()}</span>{d.data.published.getFullYear()}</time>
           <div><a href={u(`/diary/${d.id}/`)}>{d.data.title}</a><p>{d.data.description}</p></div>
+          {d.data.cover && <Image class="thumb" src={d.data.cover} alt="" width={140} height={140} fit="cover" position="attention" format="webp" />}
         </li>
       ))}
     </ul>
@@ -113,6 +119,9 @@ const website = {
   .h1-sub { display: block; font-size: clamp(1rem, 1.8vw, 1.25rem); letter-spacing: .06em; color: var(--ink-soft); margin-bottom: .5rem; }
   .lead { color: var(--ink-soft); max-width: 32em; }
   .actions { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 1.6rem; }
+  .hero-art { position: relative; }
+  .hero-photo { position: absolute; right: -4%; bottom: -8%; width: 46%; margin: 0; transform: rotate(4deg); padding: .45rem .45rem 1.6rem; background: #fff; border-radius: 6px; box-shadow: 0 18px 36px -18px rgba(42, 51, 99, .55); }
+  .hero-photo :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 40%; border-radius: 3px; }
   .sky { aspect-ratio: 1; display: grid; place-items: center; padding: 8%; border-radius: 42% 58% 52% 48% / 48% 44% 56% 52%; background: radial-gradient(circle at 30% 25%, #3d4785, var(--night)); box-shadow: 0 30px 60px -30px rgba(42, 51, 99, .55); }
 
   .topics ul { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .8rem; }
@@ -124,10 +133,7 @@ const website = {
   .cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
   .cat { display: flex; align-items: center; gap: 1rem; padding: 1.3rem; border-radius: var(--r-md); background: var(--tone); color: var(--ink); text-decoration: none; transition: transform .15s; }
   .cat:hover { transform: translateY(-3px); }
-  .face { flex: none; width: 4.6rem; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffb466, var(--ginger) 62%, #d97520); position: relative; }
-  .face::before, .face::after { content: ''; position: absolute; top: -.55rem; width: 1.5rem; aspect-ratio: 1; background: #f7a24f; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
-  .face::before { left: .35rem; transform: rotate(-16deg); }
-  .face::after { right: .35rem; transform: rotate(16deg); }
+  .cats :global(.face) { flex: none; width: 4.6rem; height: 4.6rem; object-fit: cover; border-radius: 50%; border: 3px solid var(--paper); box-shadow: 0 6px 14px -8px rgba(42, 51, 99, .5); }
   .cat-body { display: flex; flex-direction: column; font-size: .9rem; line-height: 1.7; color: var(--ink-soft); }
   .cat-name { font-family: var(--font-head); font-weight: 700; font-size: 1.6rem; color: var(--ink); line-height: 1.3; }
   .cat-name.small { font-size: 1.15rem; }
@@ -140,6 +146,9 @@ const website = {
   .diary time span { font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; }
   .diary a { color: var(--ink); text-decoration: none; font-weight: 700; }
   .diary a::after { content: ''; position: absolute; inset: 0; }
+  .diary div { flex: 1; min-width: 0; }
+  @media (max-width: 560px) { .diary :global(.thumb) { display: none; } }
+  .diary :global(.thumb) { flex: none; width: 4.8rem; height: 4.8rem; object-fit: cover; border-radius: var(--r-md); }
   .diary p { margin: .1rem 0 0; color: var(--ink-soft); font-size: .9rem; line-height: 1.7; }
 
   .mission { background: var(--mint); border-radius: var(--r-lg); padding: clamp(1.8rem, 5vw, 3.2rem); }

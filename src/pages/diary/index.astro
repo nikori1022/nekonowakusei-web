@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { u, isoDate } from '../../site';
 
@@ -20,6 +21,7 @@ const diary = (await getCollection('diary')).sort((a, b) => +b.data.published - 
             <p>{d.data.description}</p>
             {d.data.cats.length > 0 && <p class="who">{d.data.cats.map((c) => <span>{c}</span>)}</p>}
           </div>
+          {d.data.cover && <Image class="thumb" src={d.data.cover} alt="" width={160} height={160} fit="cover" position="attention" format="webp" />}
         </li>
       ))}
     </ul>
@@ -37,6 +39,9 @@ const diary = (await getCollection('diary')).sort((a, b) => +b.data.published - 
   .days a { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 1.05rem; }
   .days a::after { content: ''; position: absolute; inset: 0; }
   .days p { margin: .15rem 0 0; color: var(--ink-soft); font-size: .9rem; line-height: 1.7; }
+  .days div { flex: 1; min-width: 0; }
+  .days :global(.thumb) { flex: none; width: 5.5rem; height: 5.5rem; object-fit: cover; border-radius: var(--r-md); }
+  @media (max-width: 520px) { .days :global(.thumb) { width: 3.6rem; height: 3.6rem; } .days time { width: 3.8rem; } .days li { gap: .8rem; padding: .9rem; } }
   .who { display: flex; gap: .3rem; }
   .who span { font-size: .75rem; padding: 0 .6rem; border-radius: 999px; background: var(--mint); color: var(--mint-deep); font-weight: 700; }
 </style>

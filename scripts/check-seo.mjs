@@ -35,7 +35,7 @@ for (const f of files) {
   for (const m of html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)) {
     try { JSON.parse(m[1]); } catch { fail(f, 'JSON-LD が壊れている'); }
   }
-  for (const m of html.matchAll(/<img (?![^>]*alt=)/g)) fail(f, 'alt のない img');
+  for (const m of html.matchAll(/<img (?![^>]*\salt[\s=>])/g)) fail(f, 'alt のない img');
   if (is404) continue;
   for (const m of html.matchAll(/href="([^"#]*?)(#[^"]*)?"/g)) {
     let href = m[1];

@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import { SITE, u } from '../site';
 
 export interface Crumb { name: string; path: string }
@@ -10,13 +12,19 @@ interface Props {
   crumbs?: Crumb[];
   jsonLd?: Record<string, unknown>[];
   noindex?: boolean;
+  /** SNSシェア用の画像（未指定なら共通の og.png） */
+  image?: ImageMetadata;
 }
-const { title, description = SITE.description, type = 'website', crumbs = [], jsonLd = [], noindex = false } = Astro.props;
+const { title, description = SITE.description, type = 'website', crumbs = [], jsonLd = [], noindex = false, image } = Astro.props;
 
 const isHome = Astro.url.pathname === import.meta.env.BASE_URL || Astro.url.pathname === u('/');
 const fullTitle = isHome ? `${SITE.name}｜${SITE.tagline}` : `${title}｜${SITE.shortName}`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const ogImage = new URL(u('/og.png'), Astro.site).href;
+const siteOg = new URL(u('/og.png'), Astro.site).href;
+// ページ専用の写真があれば 1200x630 に切り抜いて OGP に使う
+const ogImage = image
+  ? new URL((await getImage({ src: image, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 82 })).src, Astro.site).href
+  : siteOg;
 const siteRoot = new URL(u('/'), Astro.site).href;
 
 const org = {
@@ -27,7 +35,7 @@ const org = {
   alternateName: [SITE.shortName, 'ねこわく'],
   url: siteRoot,
   logo: new URL(u('/favicon.svg'), Astro.site).href,
-  image: ogImage,
+  image: siteOg,
   description: SITE.description,
   foundingDate: SITE.foundingDate,
   areaServed: '北九州市',
