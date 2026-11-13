@@ -1,4 +1,5 @@
 ---
+import MugiPlanet from '../../components/MugiPlanet.astro';
 import Base from '../../layouts/Base.astro';
 import { Picture, getImage } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
@@ -27,6 +28,7 @@ const ld = {
 ---
 <Base title={`${d.title}｜テン・ムギ日記`} description={d.description} type="article" crumbs={[{ name: '日記', path: '/diary/' }, { name: d.title, path: `/diary/${entry.id}/` }]} jsonLd={[ld]} image={d.cover}>
   <article class="narrow prose page">
+    <div class="post-mugi"><MugiPlanet priority={false} /></div>
     <p class="meta"><time datetime={isoDate(d.published)}>{formatDate(d.published)}</time>{d.cats.length > 0 && <>／登場：{d.cats.join('・')}</>}</p>
     <h1>{d.title}</h1>
     {d.cover && (
@@ -49,4 +51,5 @@ const ld = {
   .cover { margin: 1.2rem 0 2rem; }
   .cover :global(img) { width: 100%; height: auto; max-height: 34rem; object-fit: cover; border-radius: var(--r-lg); background: var(--ginger-soft); }
   .pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .95rem; }
+  .post-mugi { width: min(15rem, 62%); margin: 1.4rem auto 1.6rem; }
 </style>
