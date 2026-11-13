@@ -7,7 +7,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check:seo": "node scripts/check-seo.mjs"
+    "check:seo": "node scripts/check-seo.mjs",
+    "lint:articles": "node scripts/lint-articles.mjs",
+    "photos": "node scripts/photos.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

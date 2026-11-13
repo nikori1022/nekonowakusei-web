@@ -29,6 +29,15 @@ published: 2026-11-12
 
 `main` に push すると自動で公開される。サイトマップ・RSSも自動更新。
 
+## ねこの惑星マガジン（週3本・自動下書き）
+
+- 月・水・金に Claude の定期タスクが記事を書いて **PR** を出す。藤島さんが読んでマージすると公開
+- 直してほしいところは PR に `@claude ここをこう直して` とコメント
+- 編集方針・文体ルール：`magazine/EDITORIAL.md`／テン・ムギの事実メモ：`magazine/cats.md`
+- 写真カタログ：`magazine/photo-catalog.md`／掲載ログとネタ帳：`magazine/log.md`／情報源：`magazine/sources.md`
+- `npm run lint:articles` … AI臭い言い回し・出典・写真・分量のチェック（PRで自動実行）
+- `npm run photos -- add <写真フォルダ> <番号> <保存名>` … 写真アーカイブから記事用に取り込む（位置情報を削除）
+
 ## SEOのしくみ
 
 - 全ページに title / description / canonical / OGP / Twitterカード

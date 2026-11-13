@@ -5,6 +5,7 @@ import TopicIcon from '../../components/TopicIcon.astro';
 import { getCollection, render } from 'astro:content';
 import { SITE, u, formatDate, isoDate } from '../../site';
 import { TOPICS } from '../../topics';
+import { Image, getImage } from 'astro:assets';
 
 export async function getStaticPaths() {
   const all = await getCollection('articles');
@@ -15,6 +16,8 @@ const { Content, headings } = await render(entry);
 const d = entry.data;
 const t = TOPICS[d.category];
 const related = all.filter((a) => a.id !== entry.id && a.data.category === d.category).concat(all.filter((a) => a.id !== entry.id && a.data.category !== d.category)).slice(0, 3);
+const ogImg = d.cover ? await getImage({ src: d.cover, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 82 }) : null;
+const ogImage = ogImg ? new URL(ogImg.src, Astro.site).href : undefined;
 const url = new URL(u(`/articles/${entry.id}/`), Astro.site).href;
 const root = new URL(u('/'), Astro.site).href;
 const ld = {
@@ -25,7 +28,7 @@ const ld = {
   datePublished: isoDate(d.published),
   dateModified: isoDate(d.updated ?? d.published),
   mainEntityOfPage: url,
-  image: new URL(u('/og.png'), Astro.site).href,
+  image: ogImage ?? new URL(u('/og.png'), Astro.site).href,
   inLanguage: 'ja',
   articleSection: d.category,
   author: { '@id': `${root}#org` },
@@ -34,7 +37,7 @@ const ld = {
 };
 const toc = headings.filter((h) => h.depth === 2);
 ---
-<Base title={d.title} description={d.description} type="article" crumbs={[{ name: 'お役立ち記事', path: '/articles/' }, { name: d.category, path: `/articles/topic/${t.slug}/` }, { name: d.title, path: `/articles/${entry.id}/` }]} jsonLd={[ld]}>
+<Base title={d.title} description={d.description} type="article" image={d.cover} crumbs={[{ name: 'マガジン', path: '/articles/' }, { name: d.category, path: `/articles/topic/${t.slug}/` }, { name: d.title, path: `/articles/${entry.id}/` }]} jsonLd={[ld]}>
   <article class="narrow">
     <header class:list={['art-head', `tone-${t.tone}`]}>
       <a class="chip" href={u(`/articles/topic/${t.slug}/`)}><TopicIcon icon={t.icon} size={28} />{d.category}</a>
@@ -46,6 +49,11 @@ const toc = headings.filter((h) => h.depth === 2);
         ／ 文：{SITE.name}
       </p>
     </header>
+    {d.cover && (
+      <figure class="cover">
+        <Image src={d.cover} alt={d.coverAlt ?? ''} widths={[480, 800, 1200]} sizes="(max-width: 760px) 100vw, 760px" loading="eager" fetchpriority="high" />
+      </figure>
+    )}
     {toc.length > 2 && (
       <nav class="toc" aria-label="目次">
         <p>この記事の内容</p>
@@ -76,6 +84,10 @@ const toc = headings.filter((h) => h.depth === 2);
   .art-head h1 { margin: .9rem 0 .7rem; font-size: clamp(1.55rem, 3.4vw, 2.15rem); }
   .desc { color: var(--ink-soft); margin-bottom: .8rem; }
   .meta { font-size: .82rem; color: var(--ink-soft); margin: 0; }
+  .cover { margin: -0.6rem 0 2rem; }
+  .cover img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--r-lg); display: block; }
+  .body :global(img) { width: 100%; height: auto; max-height: 75vh; object-fit: cover; border-radius: var(--r-md); display: block; }
+  .body :global(p:has(> img) > em) { display: block; text-align: center; font-size: .85rem; color: var(--ink-soft); font-style: normal; margin-top: .5rem; }
   .toc { background: var(--paper); border: 2px solid var(--line); border-radius: var(--r-md); padding: 1.1rem 1.4rem; margin: 0 0 2rem; }
   .toc p { font-weight: 700; margin-bottom: .3rem; }
   .toc ol { margin: 0; padding-left: 1.3em; }
