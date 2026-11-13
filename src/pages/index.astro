@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import CatPlanet from '../components/CatPlanet.astro';
-import { Image, Picture } from 'astro:assets';
+import MugiPlanet from '../components/MugiPlanet.astro';
+import { Image } from 'astro:assets';
 import { PHOTOS } from '../photos';
 import ArticleCard from '../components/ArticleCard.astro';
 import TopicIcon from '../components/TopicIcon.astro';
@@ -35,10 +35,7 @@ const website = {
         </p>
       </div>
       <div class="hero-art">
-        <div class="sky"><CatPlanet /></div>
-        <figure class="hero-photo">
-          <Picture src={PHOTOS.both.src} alt={PHOTOS.both.alt} widths={[240, 360, 540]} sizes="(max-width: 860px) 40vw, 16rem" formats={['avif', 'webp']} loading="eager" />
-        </figure>
+        <MugiPlanet />
       </div>
     </div>
   </section>
@@ -120,9 +117,6 @@ const website = {
   .lead { color: var(--ink-soft); max-width: 32em; }
   .actions { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 1.6rem; }
   .hero-art { position: relative; }
-  .hero-photo { position: absolute; right: -4%; bottom: -8%; width: 46%; margin: 0; transform: rotate(4deg); padding: .45rem .45rem 1.6rem; background: #fff; border-radius: 6px; box-shadow: 0 18px 36px -18px rgba(42, 51, 99, .55); }
-  .hero-photo :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 40%; border-radius: 3px; }
-  .sky { aspect-ratio: 1; display: grid; place-items: center; padding: 8%; border-radius: 42% 58% 52% 48% / 48% 44% 56% 52%; background: radial-gradient(circle at 30% 25%, #3d4785, var(--night)); box-shadow: 0 30px 60px -30px rgba(42, 51, 99, .55); }
 
   .topics ul { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .8rem; }
   .topics a { display: flex; align-items: center; gap: .7rem; padding: .7rem 1rem .7rem .7rem; border-radius: var(--r-md); background: var(--tone); color: var(--tone-deep); text-decoration: none; font-weight: 700; transition: transform .15s; }

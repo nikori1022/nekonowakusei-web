@@ -1,0 +1,103 @@
+---
+// 宇宙の丸い窓のなかで、ムギの3D頭部がずっと回り続ける。クリックで表情が切り替わる。
+import { u } from '../site';
+import { MUGI_EXPRESSIONS, MUGI_SPRITE } from '../mugi-expressions';
+const base = u('/mugi3d/');
+const first = MUGI_EXPRESSIONS[0];
+const many = MUGI_EXPRESSIONS.length > 1;
+---
+<div class="space" data-mugi data-base={base} data-expressions={JSON.stringify(MUGI_EXPRESSIONS)} data-sprite={JSON.stringify(MUGI_SPRITE)}>
+  <svg class="stars" viewBox="0 0 400 400" aria-hidden="true">
+    <g fill="#fff">
+      <circle cx="52" cy="78" r="2.2" /><circle cx="338" cy="64" r="1.8" /><circle cx="350" cy="300" r="2.2" /><circle cx="70" cy="330" r="1.6" />
+      <circle cx="120" cy="42" r="1.2" /><circle cx="286" cy="352" r="1.3" /><circle cx="30" cy="210" r="1.3" /><circle cx="372" cy="186" r="1.5" />
+      <circle cx="210" cy="24" r="1.4" /><circle cx="176" cy="372" r="1.1" /><circle cx="312" cy="120" r="1" /><circle cx="92" cy="268" r="1" />
+    </g>
+    <g fill="#bcd4ff" opacity=".7">
+      <circle cx="262" cy="40" r="1" /><circle cx="44" cy="140" r="1" /><circle cx="364" cy="244" r="1" /><circle cx="140" cy="350" r="1" /><circle cx="236" cy="376" r="1.2" />
+    </g>
+  </svg>
+  <svg class="ring" viewBox="0 0 400 400" aria-hidden="true">
+    <path d="M10 222 A190 50 0 0 1 390 222" transform="rotate(-14 200 222)" />
+  </svg>
+  <button class="cat" type="button" aria-label={many ? 'ムギの表情を変える' : 'ムギをつつく'}>
+    <img src={`${base}${first.id}-poster.webp`} alt="ぐるぐる回る、茶トラ白の猫ムギの3Dモデル" width="320" height="320" decoding="async" fetchpriority="high" />
+    <canvas width="320" height="320" aria-hidden="true"></canvas>
+  </button>
+  <svg class="ring front" viewBox="0 0 400 400" aria-hidden="true">
+    <path d="M10 222 A190 50 0 0 0 390 222" transform="rotate(-14 200 222)" />
+  </svg>
+  <p class="label" aria-live="polite" hidden={!many}>{first.label}</p>
+</div>
+
+<style>
+  .space { position: relative; aspect-ratio: 1; border-radius: 50%; isolation: isolate;
+    background: radial-gradient(circle at 28% 22%, #3a4a9a 0%, #1b2156 38%, #0a0d2a 72%, #05061a 100%);
+    box-shadow: 0 30px 60px -30px rgba(20, 24, 70, .7), inset 0 0 60px rgba(120, 150, 255, .18); }
+  .space::before { content: ''; position: absolute; inset: 0; border-radius: 50%; z-index: -1;
+    background: radial-gradient(40% 30% at 72% 70%, rgba(150, 90, 220, .28), transparent 70%), radial-gradient(34% 26% at 24% 62%, rgba(60, 150, 255, .22), transparent 70%); }
+  .stars, .ring { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .stars { border-radius: 50%; animation: twinkle 5s ease-in-out infinite alternate; }
+  .ring { overflow: visible; }
+  .ring path { fill: none; stroke: #5db4ff; stroke-width: 7; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(93, 180, 255, .8)); }
+  .ring:not(.front) path { opacity: .55; }
+  .cat { position: absolute; inset: -2%; display: grid; place-items: center; padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .cat:focus-visible { outline: 3px solid #9fd0ff; outline-offset: 4px; }
+  .cat img, .cat canvas { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: contain; }
+  .cat canvas { opacity: 0; }
+  .space.ready .cat canvas { opacity: 1; }
+  .space.ready .cat img { opacity: 0; }
+  .space.poke .cat { animation: poke .45s cubic-bezier(.3, 1.6, .5, 1); }
+  .label { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); margin: 0; padding: .2rem .8rem; border-radius: 999px; background: rgba(10, 13, 42, .7); color: #fff; font-size: .8rem; font-weight: 700; }
+  @keyframes poke { 0% { transform: scale(1); } 40% { transform: scale(.92); } 100% { transform: scale(1); } }
+  @keyframes twinkle { from { opacity: .65; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .stars, .space.poke .cat { animation: none; } }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-mugi]').forEach((root) => {
+    const list = JSON.parse(root.dataset.expressions!) as { id: string; label: string }[];
+    const sp = JSON.parse(root.dataset.sprite!) as { cols: number; rows: number; frames: number; size: number; fps: number };
+    const base = root.dataset.base!;
+    const btn = root.querySelector<HTMLButtonElement>('.cat')!;
+    const canvas = root.querySelector('canvas')!;
+    const label = root.querySelector<HTMLElement>('.label')!;
+    const ctx = canvas.getContext('2d')!;
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const sheets = new Map<string, HTMLImageElement>();
+    let current = 0, frame = 0, last = 0, visible = true, raf = 0;
+
+    const load = (i: number) => new Promise<HTMLImageElement>((ok, ng) => {
+      const id = list[i].id; const hit = sheets.get(id);
+      if (hit) return ok(hit);
+      const im = new Image(); im.decoding = 'async';
+      im.onload = () => { sheets.set(id, im); ok(im); }; im.onerror = ng; im.src = `${base}${id}.webp`;
+    });
+    const draw = () => {
+      const im = sheets.get(list[current].id); if (!im) return;
+      const s = im.width / sp.cols;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(im, (frame % sp.cols) * s, Math.floor(frame / sp.cols) * s, s, s, 0, 0, canvas.width, canvas.height);
+    };
+    const tick = (t: number) => {
+      raf = requestAnimationFrame(tick);
+      if (!visible || document.hidden || t - last < 1000 / sp.fps) return;
+      last = t; frame = (frame + 1) % sp.frames; draw();
+    };
+    const start = async () => {
+      await load(current); draw(); root.classList.add('ready');
+      if (!still && !raf) raf = requestAnimationFrame(tick);
+      if (list.length > 1) load((current + 1) % list.length).catch(() => {});
+    };
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(root);
+    btn.addEventListener('click', async () => {
+      root.classList.remove('poke'); void root.offsetWidth; root.classList.add('poke');
+      if (list.length < 2) return;
+      const next = (current + 1) % list.length;
+      try { await load(next); } catch { return; }
+      current = next; label.textContent = list[current].label; draw();
+      load((current + 1) % list.length).catch(() => {});
+    });
+    if ('requestIdleCallback' in window) requestIdleCallback(() => start().catch(() => {})); else setTimeout(() => start().catch(() => {}), 200);
+  });
+</script>
