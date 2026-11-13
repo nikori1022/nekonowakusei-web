@@ -20,6 +20,8 @@ const fail = (f, msg) => { problems++; console.log(`✗ ${f}: ${msg}`); };
 
 for (const f of files) {
   const html = readFileSync(f, 'utf8');
+  // noindex のページ（記事チェック用アプリなど）は検索に出さないので対象外
+  if (/<meta name="robots" content="noindex/.test(html)) continue;
   // 転送用ページ（astro.config の redirects）は中身がないので対象外
   if (/<meta http-equiv="refresh"/.test(html)) continue;
   const is404 = f.endsWith('404.html');
