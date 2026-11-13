@@ -8,11 +8,11 @@ import { topicNames } from '../../topics';
 const articles = (await getCollection('articles')).sort((a, b) => +b.data.published - +a.data.published);
 const counts = Object.fromEntries(topicNames.map((n) => [n, articles.filter((a) => a.data.category === n).length]));
 ---
-<Base title="保護猫のお役立ち記事" description="保護猫を迎える準備、新しい家に慣れるまでの過ごし方、室内飼いのコツ、北九州の保護猫事情など、保護猫施設ねこの惑星がまとめたお役立ち記事の一覧です。" crumbs={[{ name: 'お役立ち記事', path: '/articles/' }]}>
+<Base title="ねこの惑星マガジン｜保護猫と暮らすお役立ち記事" description="保護猫を迎える準備、新しい家に慣れるまでの過ごし方、室内飼いのコツ、北九州の保護猫事情など、保護猫施設ねこの惑星がまとめたお役立ち記事の一覧です。" crumbs={[{ name: 'マガジン', path: '/articles/' }]}>
   <div class="wrap">
     <header class="page-head">
-      <h1>保護猫のお役立ち記事</h1>
-      <p>保護猫を迎える前に知っておきたいこと、一緒に暮らすコツ、北九州の情報をまとめています。</p>
+      <h1>ねこの惑星マガジン</h1>
+      <p>猫の体と暮らしの話、保護猫を迎える準備、北九州の情報を、テンとムギと一緒にお届けします。月・水・金に更新。</p>
     </header>
     <TopicNav counts={counts} />
     <div class="grid">
