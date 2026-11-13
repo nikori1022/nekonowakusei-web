@@ -3,10 +3,10 @@ import Base from '../layouts/Base.astro';
 import { SITE, u } from '../site';
 
 const faqs = [
-  { q: '見学に予約は必要ですか？', a: '猫の体調や施設の状況に合わせてご案内するため、事前にメールでご連絡ください。日時を相談して決めます。' },
+  { q: '見学に予約は必要ですか？', a: '猫の体調や施設の状況に合わせてご案内するため、事前にラシクラボ小倉鍛冶町の公式サイト（お問い合わせフォーム・電話・LINE）からお申し込みください。日時を相談して決めます。' },
   { q: '見学に費用はかかりますか？', a: '見学は無料です。' },
   { q: '子どもと一緒に見学できますか？', a: 'はい、ご家族での見学も歓迎です。猫が驚かないよう、大きな声を出さない・急に触らないなど、職員の案内に沿ってお願いします。' },
-  { q: '猫のお世話をボランティアとして手伝えますか？', a: 'お手伝いの形は施設の状況によって変わるため、まずはメールでご相談ください。' },
+  { q: '猫のお世話をボランティアとして手伝えますか？', a: 'お手伝いの形は施設の状況によって変わるため、まずはラシクラボ小倉鍛冶町の公式サイトからご相談ください。' },
 ];
 const faqLd = {
   '@context': 'https://schema.org',
@@ -22,12 +22,12 @@ const mail = `mailto:${SITE.email}?subject=${encodeURIComponent('見学の申し
 
     <h2>見学の流れ</h2>
     <ol>
-      <li><strong>メールで申し込み</strong>：お名前、希望日時、人数を送ってください。</li>
+      <li><strong>公式サイトから申し込み</strong>：運営するラシクラボ小倉鍛冶町の公式サイトから、お問い合わせフォーム・電話・LINEで「ねこの惑星の見学希望」とお伝えください。</li>
       <li><strong>日時の確定</strong>：施設から返信して日時を決めます。</li>
       <li><strong>見学</strong>：猫たちの暮らしを見たり、一緒に遊んだりできます。</li>
     </ol>
-    <p><a class="btn" href={mail}>メールで見学を申し込む</a></p>
-    <p class="small">宛先：{SITE.email}</p>
+    <p><a class="btn" href={SITE.visitUrl} target="_blank" rel="noopener">見学を申し込む（ラシクラボ小倉鍛冶町 公式サイト）<span class="sr-only">新しいタブで開きます</span></a></p>
+    <p class="small">メールでも受け付けています：<a href={mail}>{SITE.email}</a></p>
     {SITE.openingHours && <p>見学受付時間：{SITE.openingHours}</p>}
 
     <h2>猫を迎えたい方へ</h2>
