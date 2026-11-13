@@ -19,6 +19,8 @@ export const SITE = {
     name: 'ラシクラボ小倉鍛冶町（就労継続支援B型）',
     url: 'https://rashikulab.jp/office/kokurakazimachi',
   },
+  /** 見学の申し込み先（ラシクラボ小倉鍛冶町の公式サイト。フォーム・電話・LINEで受付） */
+  visitUrl: 'https://rashikulab.jp/office/kokurakazimachi',
   sns: [
     { name: 'TikTok', url: 'https://www.tiktok.com/@nekonowakusei' },
     { name: 'YouTube', url: 'https://www.youtube.com/channel/UCeSKu7RnpGLcdTR6xiw9DFw' },
