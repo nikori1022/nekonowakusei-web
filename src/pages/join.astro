@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import { Picture } from 'astro:assets';
+import { PHOTOS } from '../photos';
+import { SITE, u } from '../site';
+
+// 就労継続支援B型の事業所を探している方向けの案内。
+// 文面はラシクラボとしての利用者募集にあたるため、変更時は事業所に確認する。
+const faqs = [
+  {
+    q: '利用するには何が必要ですか？',
+    a: '就労継続支援B型の利用には、お住まいの市区町村が発行する「障害福祉サービス受給者証」が必要です。障害者手帳をお持ちでない方も、医師の診断書などで利用できる場合があります。手続きがわからない段階でも、まずはお気軽にご相談ください。',
+  },
+  {
+    q: '猫のお世話をしたことがなくても大丈夫ですか？',
+    a: 'はい。猫のお世話は、作業のひとつとして職員と一緒に取り組みます。できることから少しずつで大丈夫です。',
+  },
+  {
+    q: '猫のお世話以外の作業もありますか？',
+    a: 'ラシクラボ小倉鍛冶町では、イラストやデザイン、動画編集、音楽制作、3Dモデリング、ハンドメイドなど、クリエイティブな作業にも取り組めます。くわしくは公式サイトをご覧ください。',
+  },
+  {
+    q: '猫に会うためだけの見学はできますか？',
+    a: 'ねこの惑星は利用者さんの作業の場のため、一般の方の見学は行っていません。テンとムギの毎日はTikTokやYouTubeで発信しているので、ぜひそちらで会いに来てください。',
+  },
+];
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Base
+  title="猫のお世話が仕事になる就労継続支援B型｜北九州・小倉"
+  description="北九州市小倉北区の就労継続支援B型「ラシクラボ小倉鍛冶町」では、保護猫施設ねこの惑星での猫のお世話を作業のひとつとして行っています。B型事業所を探している方は、ぜひ見学・体験へ。"
+  crumbs={[{ name: '就労支援施設をお探しの方へ', path: '/join/' }]}
+  jsonLd={[faqLd]}
+  image={PHOTOS.both.src}
+>
+  <article class="narrow prose page">
+    <p class="kicker">就労継続支援B型の事業所をお探しの方へ</p>
+    <h1>猫のお世話が、あなたの仕事になる場所</h1>
+    <p>ねこの惑星は、就労継続支援B型事業所「ラシクラボ小倉鍛冶町」の利用者さんと職員が一緒に運営している保護猫施設です。茶トラのテンとムギのお世話は、事業所の作業のひとつ。北九州・小倉で通える事業所を探している方は、ぜひ一度見学・体験にお越しください。</p>
+
+    <figure class="photo">
+      <Picture src={PHOTOS.both.src} alt={PHOTOS.both.alt} widths={[400, 700]} sizes="(max-width: 420px) 100vw, 22rem" formats={['avif', 'webp']} />
+    </figure>
+
+    <h2>ねこの惑星でできる作業</h2>
+    <ul>
+      <li>ごはんと水の用意、トイレ掃除、ブラッシング</li>
+      <li>遊び相手と、体調の小さな変化に気づくための観察</li>
+      <li>写真・動画の撮影と編集、TikTok・YouTubeなどSNSでの発信</li>
+      <li>手書きの「ねこわく新聞」づくり、猫をモチーフにしたグッズの制作</li>
+    </ul>
+    <p>生きもののお世話を通して「頼られている」「役に立っている」と感じられること、発信を通して文章や動画のスキルが身につくことが、この作業のいいところです。取り組みの背景は<a href={u('/articles/shuro-shien-hogoneko/')}>就労継続支援B型×保護猫の記事</a>で紹介しています。</p>
+
+    <h2>見学・体験までの流れ</h2>
+    <ol>
+      <li><strong>お問い合わせ</strong>：ラシクラボ小倉鍛冶町の公式サイトのお問い合わせフォーム・電話・LINEから、見学・体験を申し込んでください。「ねこの惑星を見て」と添えていただけるとスムーズです。</li>
+      <li><strong>見学・体験</strong>：事業所の雰囲気や作業の様子を見ていただけます。</li>
+      <li><strong>利用の手続き</strong>：利用を決めたら、受給者証の申請など必要な手続きを職員がご案内します。</li>
+    </ol>
+    <p><a class="btn" href={SITE.joinUrl} target="_blank" rel="noopener">見学・体験を申し込む（ラシクラボ小倉鍛冶町 公式サイト）<span class="sr-only">新しいタブで開きます</span></a></p>
+
+    <h2>よくある質問</h2>
+    <dl class="faq">
+      {faqs.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+    </dl>
+  </article>
+</Base>
+
+<style>
+  .kicker { margin: 0 0 .4rem; font-weight: 700; color: var(--ginger-ink); }
+  .photo { margin: 1.6rem auto; width: min(100%, 22rem); }
+  .photo :global(img) { display: block; width: 100%; height: auto; border-radius: var(--r-lg); }
+  .faq dt { font-weight: 700; margin-top: 1.4rem; }
+  .faq dd { margin: .4rem 0 0; }
+</style>

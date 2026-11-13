@@ -117,7 +117,7 @@ a:hover { text-decoration-thickness: 2px; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-/* 固定ページ（施設について・見学など）の書き出し */
+/* 固定ページ（施設について・利用者募集など）の書き出し */
 .page > h1:first-child, .page > .meta + h1 { margin-top: 1.6rem; padding-bottom: .9rem; border-bottom: 3px dotted var(--line); }
 
 /* 画面には出さず読み上げだけするテキスト */

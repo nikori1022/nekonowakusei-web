@@ -6,11 +6,11 @@ export const SITE = {
   shortName: 'ねこの惑星',
   tagline: '北九州・小倉の保護猫施設',
   description:
-    '北九州市小倉にある保護猫施設「ねこの惑星」の公式サイト。茶トラのテンとムギの日記、見学のご案内、保護猫を迎える準備や北九州の保護猫情報をまとめています。',
+    '北九州市小倉にある保護猫施設「ねこの惑星」の公式サイト。茶トラのテンとムギの日記、就労継続支援B型×保護猫の取り組み、保護猫を迎える準備や北九州の保護猫情報をまとめています。',
   locale: 'ja_JP',
   foundingDate: '2022-06',
   area: '福岡県北九州市小倉北区',
-  // TODO: 住所・電話・見学受付時間が決まったら入れる（未入力の項目は表示されない）
+  // TODO: 住所・電話・営業時間が決まったら入れる（未入力の項目は表示されない）
   address: '',
   telephone: '',
   openingHours: '',
@@ -19,8 +19,8 @@ export const SITE = {
     name: 'ラシクラボ小倉鍛冶町（就労継続支援B型）',
     url: 'https://rashikulab.jp/office/kokurakazimachi',
   },
-  /** 見学の申し込み先（ラシクラボ小倉鍛冶町の公式サイト。フォーム・電話・LINEで受付） */
-  visitUrl: 'https://rashikulab.jp/office/kokurakazimachi',
+  /** 利用希望の方の見学・体験の申し込み先（ラシクラボ小倉鍛冶町の公式サイト。フォーム・電話・LINEで受付） */
+  joinUrl: 'https://rashikulab.jp/office/kokurakazimachi',
   sns: [
     { name: 'TikTok', url: 'https://www.tiktok.com/@nekonowakusei' },
     { name: 'YouTube', url: 'https://www.youtube.com/channel/UCeSKu7RnpGLcdTR6xiw9DFw' },

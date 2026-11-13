@@ -30,8 +30,8 @@ const website = {
         <h1><span class="h1-sub">北九州・小倉の保護猫施設</span>ねこの惑星</h1>
         <p class="lead">ねこの惑星は、就労継続支援B型のメンバーと一緒に猫のお世話をしている保護猫施設です。殺処分ゼロを目指して、毎日の様子や猫との暮らしに役立つ情報を発信しています。</p>
         <p class="actions">
-          <a class="btn" href={SITE.visitUrl} target="_blank" rel="noopener">見学を申し込む<span class="sr-only">（ラシクラボ小倉鍛冶町の公式サイトが新しいタブで開きます）</span></a>
-          <a class="btn-ghost" href={u('/cats/')}>テンとムギを見る</a>
+          <a class="btn" href={u('/cats/')}>テンとムギを見る</a>
+          <a class="btn-ghost" href={u('/join/')}>就労支援施設をお探しの方へ</a>
         </p>
       </div>
       <div class="hero-art">
@@ -103,7 +103,10 @@ const website = {
     <div>
       <h2 id="mission-h">猫のお世話が、誰かの仕事になる場所</h2>
       <p>ねこの惑星は、就労継続支援B型事業所「ラシクラボ小倉」「ラシクラボ小倉鍛冶町」の利用者さんと職員が一緒に運営しています。ごはんやトイレ掃除、遊び相手、SNSでの発信、手書きの「ねこわく新聞」づくり。猫たちの毎日を支える仕事を、みんなで分け合っています。</p>
-      <a class="btn-ghost" href={u('/about/')}>ねこの惑星について</a>
+      <p class="actions">
+        <a class="btn" href={u('/join/')}>一緒に猫のお世話をしませんか</a>
+        <a class="btn-ghost" href={u('/about/')}>ねこの惑星について</a>
+      </p>
     </div>
   </section>
 </Base>
