@@ -40,7 +40,7 @@ const toc = headings.filter((h) => h.depth === 2);
 ---
 <Base title={d.title} description={d.description} type="article" image={d.cover} crumbs={[{ name: 'マガジン', path: '/articles/' }, { name: d.category, path: `/articles/topic/${t.slug}/` }, { name: d.title, path: `/articles/${entry.id}/` }]} jsonLd={[ld]}>
   <article class="narrow">
-    <div class="post-mugi"><MugiPlanet priority={false} /></div>
+    {d.category !== '就労支援' && <div class="post-mugi"><MugiPlanet priority={false} /></div>}
     <header class:list={['art-head', `tone-${t.tone}`]}>
       <a class="chip" href={u(`/articles/topic/${t.slug}/`)}><TopicIcon icon={t.icon} size={28} />{d.category}</a>
       <h1>{d.title}</h1>
