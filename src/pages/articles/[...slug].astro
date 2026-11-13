@@ -1,4 +1,5 @@
 ---
+import MugiPlanet from '../../components/MugiPlanet.astro';
 import Base from '../../layouts/Base.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import TopicIcon from '../../components/TopicIcon.astro';
@@ -39,6 +40,7 @@ const toc = headings.filter((h) => h.depth === 2);
 ---
 <Base title={d.title} description={d.description} type="article" image={d.cover} crumbs={[{ name: 'マガジン', path: '/articles/' }, { name: d.category, path: `/articles/topic/${t.slug}/` }, { name: d.title, path: `/articles/${entry.id}/` }]} jsonLd={[ld]}>
   <article class="narrow">
+    <div class="post-mugi"><MugiPlanet priority={false} /></div>
     <header class:list={['art-head', `tone-${t.tone}`]}>
       <a class="chip" href={u(`/articles/topic/${t.slug}/`)}><TopicIcon icon={t.icon} size={28} />{d.category}</a>
       <h1>{d.title}</h1>
@@ -104,4 +106,5 @@ const toc = headings.filter((h) => h.depth === 2);
   .tone-lilac { --tone: var(--lilac); --tone-deep: var(--lilac-deep); }
   .tone-sky { --tone: var(--sky); --tone-deep: var(--sky-deep); }
   .tone-rose { --tone: var(--rose); --tone-deep: var(--rose-deep); }
+  .post-mugi { width: min(15rem, 62%); margin: .4rem auto 1.6rem; }
 </style>

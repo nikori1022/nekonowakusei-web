@@ -2,6 +2,7 @@
 // 宇宙の丸い窓のなかで、ムギの3D頭部がずっと回り続ける。クリックで表情が切り替わる。
 import { u } from '../site';
 import { MUGI_EXPRESSIONS, MUGI_SPRITE } from '../mugi-expressions';
+const { priority = true } = Astro.props as { priority?: boolean };
 const base = u('/mugi3d/');
 const first = MUGI_EXPRESSIONS[0];
 const many = MUGI_EXPRESSIONS.length > 1;
@@ -32,7 +33,7 @@ const many = MUGI_EXPRESSIONS.length > 1;
     <path d="M10 222 A190 50 0 0 1 390 222" transform="rotate(-14 200 222)" />
   </svg>
   <button class="cat" type="button" aria-label={many ? 'ムギの表情を変える' : 'ムギをつつく'}>
-    <img src={`${base}${first.id}-poster.webp`} alt="ぐるぐる回る、茶トラ白の猫ムギの3Dモデル" width="320" height="320" decoding="async" fetchpriority="high" />
+    <img src={`${base}${first.id}-poster.webp`} alt="ぐるぐる回る、茶トラ白の猫ムギの3Dモデル" width="320" height="320" decoding="async" fetchpriority={priority ? 'high' : 'low'} />
     <canvas width="320" height="320" aria-hidden="true"></canvas>
   </button>
   <svg class="ring front" viewBox="0 0 400 400" aria-hidden="true">
