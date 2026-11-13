@@ -16,10 +16,12 @@ const articles = defineCollection({
 
 const diary = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/diary' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string().max(140),
     published: z.coerce.date(),
+    cover: image().optional(),
+    coverAlt: z.string().optional(),
     cats: z.array(z.enum(['テン', 'ムギ'])).default([]),
   }),
 });
