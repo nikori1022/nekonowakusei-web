@@ -7,7 +7,7 @@ cover: ../../assets/cats/mag/fuyu-kiken-shokubutsu-0159.jpg
 coverAlt: 大きな目でまっすぐこちらを見上げるムギ
 cats: [ムギ, テン]
 sources:
-  - name: FDA（米国食品医薬品局）「Lovely Lilies and Curious Cats: A Dangerous Combination」
+  - name: FDA（米国食品医薬品局）「Lovely Lilies and Curious Cats – A Dangerous Combination」
     url: https://www.fda.gov/animal-veterinary/animal-health-literacy/lovely-lilies-and-curious-cats-dangerous-combination
   - name: 大黒屋勉・大黒屋由美「ユリ中毒により急性腎不全を呈した猫の1例」（山口獣医学雑誌 第37号、2010年）
     url: https://agriknowledge.affrc.go.jp/RN/2010812170.pdf
