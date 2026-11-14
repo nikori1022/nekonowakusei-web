@@ -45,11 +45,14 @@ published: 2026-11-12
 - `sitemap-index.xml`、`robots.txt`、`rss.xml` を自動生成
 - ビルド時に `check:seo` で品質チェック（CIでも実行）
 
-## 独自ドメインにするとき
+## 独自ドメイン（nekonowakusei.jp）
 
-1. ドメインを取得し、DNSで `nikori1022.github.io` に向ける
-2. リポジトリの Settings > Pages で Custom domain を設定
-3. Settings > Secrets and variables > Actions > Variables に `SITE_URL=https://取得したドメイン`、`BASE_PATH=/` を登録
+公開URLは `https://nekonowakusei.jp/`（お名前.comで取得、2026-11）。
+
+1. お名前.comのDNSに A レコード4つ（185.199.108〜111.153）と `www` → `nikori1022.github.io` の CNAME を登録
+2. リポジトリの Settings > Pages で Custom domain に `nekonowakusei.jp` を設定し、Enforce HTTPS をオン
+3. 旧URL `nikori1022.github.io/nekonowakusei-web/…` は GitHub が新ドメインへ自動転送する
+4. Search Console に `nekonowakusei.jp` をドメインプロパティとして追加
 
 ## 施設側で埋めること（`src/site.ts`）
 
