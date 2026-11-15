@@ -80,6 +80,10 @@ const nav = [
   {noindex && <meta name="robots" content="noindex" />}
   <meta name="theme-color" content="#1e2a55" />
   <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
+  <!-- ホーム画面に追加したときのアイコン（惑星ムギ） -->
+  <link rel="apple-touch-icon" href={u('/apple-touch-icon.png')} />
+  <link rel="manifest" href={u('/manifest.webmanifest')} />
+  <meta name="apple-mobile-web-app-title" content={SITE.shortName} />
   <link rel="sitemap" href={u('/sitemap-index.xml')} />
   <link rel="alternate" type="application/rss+xml" title={`${SITE.shortName}の新着`} href={u('/rss.xml')} />
 
