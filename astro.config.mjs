@@ -4,8 +4,8 @@ import sitemap from '@astrojs/sitemap';
 
 // 公開URL。独自ドメインを取ったら SITE_URL を書き換え、BASE_PATH を "/" にする。
 // 例: SITE_URL=https://nekonowakusei.jp BASE_PATH=/
-const SITE_URL = process.env.SITE_URL ?? 'https://nikori1022.github.io';
-const BASE_PATH = process.env.BASE_PATH ?? '/nekonowakusei-web';
+const SITE_URL = process.env.SITE_URL ?? 'https://nekonowakusei.jp';
+const BASE_PATH = process.env.BASE_PATH ?? '/';
 
 export default defineConfig({
   site: SITE_URL,

@@ -19,8 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # 独自ドメインを設定したら Settings > Variables で SITE_URL と BASE_PATH=/ を登録する
-      SITE_URL: ${{ vars.SITE_URL || 'https://nikori1022.github.io' }}
-      BASE_PATH: ${{ vars.BASE_PATH || '/nekonowakusei-web' }}
+      SITE_URL: ${{ vars.SITE_URL || 'https://nekonowakusei.jp' }}
+      BASE_PATH: ${{ vars.BASE_PATH || '/' }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5

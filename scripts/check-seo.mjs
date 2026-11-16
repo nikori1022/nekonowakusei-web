@@ -4,7 +4,7 @@ import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DIST = 'dist';
-const BASE = (process.env.BASE_PATH ?? '/nekonowakusei-web').replace(/\/$/, '');
+const BASE = (process.env.BASE_PATH ?? '/').replace(/\/$/, '');
 const files = [];
 (function walk(d) {
   for (const f of readdirSync(d)) {
