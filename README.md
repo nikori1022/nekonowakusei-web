@@ -47,12 +47,29 @@ published: 2026-11-12
 
 ## 独自ドメイン（nekonowakusei.jp）
 
-公開URLは `https://nekonowakusei.jp/`（お名前.comで取得、2026-11）。
+ドメインはお名前.comで取得。切り替えは次の順でやる（順番を守ると公開が止まらない）。
 
-1. お名前.comのDNSに A レコード4つ（185.199.108〜111.153）と `www` → `nikori1022.github.io` の CNAME を登録
-2. リポジトリの Settings > Pages で Custom domain に `nekonowakusei.jp` を設定し、Enforce HTTPS をオン
-3. 旧URL `nikori1022.github.io/nekonowakusei-web/…` は GitHub が新ドメインへ自動転送する
-4. Search Console に `nekonowakusei.jp` をドメインプロパティとして追加
+1. **お名前.com の DNS レコード設定**（ドメイン設定 → DNS設定/転送設定 → DNSレコード設定）
+   | ホスト名 | TYPE | VALUE |
+   |---|---|---|
+   | （空欄） | A | 185.199.108.153 |
+   | （空欄） | A | 185.199.109.153 |
+   | （空欄） | A | 185.199.110.153 |
+   | （空欄） | A | 185.199.111.153 |
+   | （空欄） | AAAA | 2606:50c0:8000::153 |
+   | （空欄） | AAAA | 2606:50c0:8001::153 |
+   | （空欄） | AAAA | 2606:50c0:8002::153 |
+   | （空欄） | AAAA | 2606:50c0:8003::153 |
+   | www | CNAME | nikori1022.github.io |
+
+   ネームサーバーはお名前.comのもの（01.dnsv.jp 〜 04.dnsv.jp）を使う。`dig nekonowakusei.jp +short` で上の4つのIPが返れば反映済み。
+2. GitHub の Settings > Variables（Actions）に `SITE_URL=https://nekonowakusei.jp`、`BASE_PATH=/` を登録
+3. Settings > Pages の Custom domain に `nekonowakusei.jp` を入れて Save → DNS check が通ったら Actions の Deploy を再実行
+4. 証明書ができたら（数分〜1日）**Enforce HTTPS** にチェック
+5. （任意・推奨）アカウントの Settings > Pages でドメインを Verify（`_github-pages-challenge-nikori1022` の TXT レコードを追加）。他人に乗っ取られるのを防げる
+6. Search Console に `https://nekonowakusei.jp/` をプロパティ追加（`public/` の確認用HTMLがそのまま使える）→ サイトマップ `sitemap-index.xml` を送信。旧URLのプロパティで「アドレス変更」は使えない（github.io は自分のドメインではないため）。GA4 はデータストリームのURLを書き換える
+
+`astro.config.mjs` と `scripts/check-seo.mjs` は環境変数 `SITE_URL` / `BASE_PATH` を読むので、コードの書き換えは不要。
 
 ## 施設側で埋めること（`src/site.ts`）
 
