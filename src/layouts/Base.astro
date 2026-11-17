@@ -102,7 +102,7 @@ const nav = [
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" />
-  <link rel="stylesheet" href={`https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap&text=${encodeURIComponent(SITE.tagline)}`} />
+  <link rel="stylesheet" href={`https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap&text=${encodeURIComponent(SITE.tagline)}`} />
 
   {import.meta.env.PROD && (
     <>
@@ -123,7 +123,7 @@ const nav = [
     <div class="wrap head-row">
       <a class="logo" href={u('/')}>
         <img src={u('/favicon.svg?v=ten')} alt="" width="40" height="40" />
-        <span class="logo-text"><small class="fuyo">{[...SITE.tagline].map((c, i) => <span style={`--i:${i}`}>{c}</span>)}</small>ねこの惑星</span>
+        <span class="logo-text"><small class="fuyo">{SITE.tagline}</small>ねこの惑星</span>
       </a>
       <nav aria-label="メインメニュー">
         <ul>
