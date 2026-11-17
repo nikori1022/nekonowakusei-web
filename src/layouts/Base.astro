@@ -102,6 +102,7 @@ const nav = [
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" />
+  <link rel="stylesheet" href={`https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap&text=${encodeURIComponent(SITE.tagline)}`} />
 
   {import.meta.env.PROD && (
     <>
@@ -122,7 +123,7 @@ const nav = [
     <div class="wrap head-row">
       <a class="logo" href={u('/')}>
         <img src={u('/favicon.svg?v=ten')} alt="" width="40" height="40" />
-        <span class="logo-text"><small>北九州・小倉の保護猫施設</small>ねこの惑星</span>
+        <span class="logo-text"><small class="fuyo">{SITE.tagline}</small>ねこの惑星</span>
       </a>
       <nav aria-label="メインメニュー">
         <ul>
@@ -181,7 +182,7 @@ const nav = [
   .head-row { display: flex; align-items: center; gap: 1.2rem; padding-block: .6rem; }
   .logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; color: var(--ink); margin-right: auto; }
   .logo-text { display: flex; flex-direction: column; font-family: var(--font-head); font-weight: 700; font-size: 1.35rem; line-height: 1.15; letter-spacing: .08em; }
-  .logo-text small { font-size: .62rem; font-weight: 500; color: var(--ink-soft); letter-spacing: .06em; }
+  .logo-text small { font-size: .7rem; font-weight: 400; color: var(--ink-soft); letter-spacing: .06em; }
   .site-head ul { display: flex; gap: .2rem; list-style: none; margin: 0; padding: 0; font-size: .92rem; }
   .site-head nav a { display: block; color: var(--ink); text-decoration: none; padding: .45rem .85rem; border-radius: 999px; font-weight: 500; }
   .site-head nav a:hover { background: #f3f0fc; }
