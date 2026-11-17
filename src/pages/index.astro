@@ -17,6 +17,7 @@ const website = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: SITE.name,
+  alternateName: [SITE.shortName, 'ねこわく'],
   url: new URL(u('/'), Astro.site).href,
   inLanguage: 'ja',
   publisher: { '@id': `${new URL(u('/'), Astro.site).href}#org` },
