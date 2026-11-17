@@ -34,7 +34,7 @@ const org = {
   name: SITE.name,
   alternateName: [SITE.shortName, 'ねこわく'],
   url: siteRoot,
-  logo: new URL(u('/favicon.svg'), Astro.site).href,
+  logo: new URL(u('/favicon.svg?v=ten'), Astro.site).href,
   image: siteOg,
   description: SITE.description,
   foundingDate: SITE.foundingDate,
@@ -79,7 +79,7 @@ const nav = [
   <link rel="canonical" href={canonical} />
   {noindex && <meta name="robots" content="noindex" />}
   <meta name="theme-color" content="#1e2a55" />
-  <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
+  <link rel="icon" href={u('/favicon.svg?v=ten')} type="image/svg+xml" />
   <!-- ホーム画面に追加したときのアイコン（惑星ムギ） -->
   <link rel="apple-touch-icon" href={u('/apple-touch-icon.png')} />
   <link rel="manifest" href={u('/manifest.webmanifest')} />
@@ -121,7 +121,7 @@ const nav = [
   <header class="site-head">
     <div class="wrap head-row">
       <a class="logo" href={u('/')}>
-        <img src={u('/favicon.svg')} alt="" width="40" height="40" />
+        <img src={u('/favicon.svg?v=ten')} alt="" width="40" height="40" />
         <span class="logo-text"><small>北九州・小倉の保護猫施設</small>ねこの惑星</span>
       </a>
       <nav aria-label="メインメニュー">
@@ -153,7 +153,7 @@ const nav = [
   <footer class="site-foot">
     <div class="wrap foot-grid">
       <div>
-        <p class="foot-name"><img src={u('/favicon.svg')} alt="" width="32" height="32" />{SITE.name}</p>
+        <p class="foot-name"><img src={u('/favicon.svg?v=ten')} alt="" width="32" height="32" />{SITE.name}</p>
         <p>{SITE.area}<br />運営：<a href={SITE.operator.url}>{SITE.operator.name}</a></p>
         <p>お問い合わせ：<a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
       </div>
