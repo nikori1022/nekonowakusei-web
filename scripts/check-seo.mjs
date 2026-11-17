@@ -42,7 +42,7 @@ for (const f of files) {
   for (const m of html.matchAll(/<img(?![^>]*\salt[\s=>])/g)) fail(f, 'alt のない img');
   if (is404) continue;
   for (const m of html.matchAll(/href="([^"#]*?)(#[^"]*)?"/g)) {
-    let href = m[1];
+    let href = m[1].replace(/\?.*$/, ""); // ?v=… などのクエリは無視
     if (!href || /^(https?:|mailto:)/.test(href)) continue;
     if (!href.startsWith('/')) href = new URL(href, `http://x${BASE}/${f.slice(DIST.length + 1).replace(/index\.html$/, '')}`).pathname;
     if (!href.startsWith(BASE)) { fail(f, `base なしのリンク ${href}`); continue; }
