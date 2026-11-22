@@ -14,8 +14,11 @@ interface Props {
   noindex?: boolean;
   /** SNSシェア用の画像（未指定なら共通の og.png） */
   image?: ImageMetadata;
+  /** false にするとこのページだけ広告を出さない（利用者募集ページなど） */
+  ads?: boolean;
 }
-const { title, description = SITE.description, type = 'website', crumbs = [], jsonLd = [], noindex = false, image } = Astro.props;
+const { title, description = SITE.description, type = 'website', crumbs = [], jsonLd = [], noindex = false, image, ads = true } = Astro.props;
+const showAds = import.meta.env.PROD && !!SITE.adsenseClient && ads && !noindex;
 
 const isHome = Astro.url.pathname === import.meta.env.BASE_URL || Astro.url.pathname === u('/');
 const fullTitle = isHome ? `${SITE.name}｜${SITE.tagline}` : `${title}｜${SITE.shortName}`;
@@ -114,6 +117,10 @@ const nav = [
       </script>
     </>
   )}
+  {SITE.adsenseClient && <meta name="google-adsense-account" content={SITE.adsenseClient} />}
+  {showAds && (
+    <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsenseClient}`} crossorigin="anonymous"></script>
+  )}
   {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 </head>
 <body>
@@ -168,6 +175,7 @@ const nav = [
         <ul class="links">
           {nav.map((n) => <li><a href={u(n.path)}>{n.name}</a></li>)}
           <li><a href={u('/join/')}>就労支援施設をお探しの方へ</a></li>
+          <li><a href={u('/privacy/')}>プライバシーポリシー</a></li>
         </ul>
       </div>
     </div>

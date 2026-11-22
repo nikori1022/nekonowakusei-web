@@ -31,6 +31,9 @@ export const SITE = {
   shop: 'https://haru64.base.shop/',
   // Google アナリティクス 4 の測定ID（ねこの惑星の Google アカウントで管理）
   gaId: 'G-WXT5FWSFGY',
+  // Google AdSense のパブリッシャーID（例: 'ca-pub-1234567890123456'）。
+  // 空のあいだは広告タグ・ads.txt とも出ない。審査に申し込むときにここへ入れる。
+  adsenseClient: '',
 };
 
 /** base パスを付けた内部リンクを返す */
