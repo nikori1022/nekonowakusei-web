@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site';
+---
+<Base title="プライバシーポリシー" description="保護猫施設ねこの惑星の公式サイトにおける、アクセス解析・広告配信とCookieの取り扱い、免責事項についてまとめています。" crumbs={[{ name: 'プライバシーポリシー', path: '/privacy/' }]}>
+  <article class="narrow prose page">
+    <h1>プライバシーポリシー</h1>
+    <p>{SITE.name}（以下「当サイト」）における、個人情報とCookieの取り扱いについて説明します。</p>
+
+    <h2>アクセス解析ツールについて</h2>
+    <p>当サイトでは、Googleによるアクセス解析ツール「Google アナリティクス」を使用しています。Google アナリティクスはCookieを使ってアクセス情報を収集しますが、個人を特定する情報は含まれません。この機能はブラウザの設定でCookieを無効にすることで拒否できます。詳しくは<a href="https://marketingplatform.google.com/about/analytics/terms/jp/" rel="noopener">Google アナリティクス利用規約</a>と<a href="https://policies.google.com/technologies/partner-sites?hl=ja" rel="noopener">Google のサービスを使用するサイトやアプリから収集した情報の Google による使用</a>をご覧ください。</p>
+
+    <h2>広告の配信について</h2>
+    <p>当サイトでは、第三者配信の広告サービス「Google アドセンス」を利用しています（利用者募集のページには広告を表示していません）。</p>
+    <ul>
+      <li>Google などの第三者配信事業者は、Cookie を使用して、ユーザーが当サイトや他のウェブサイトに過去にアクセスした際の情報に基づいて広告を配信します。</li>
+      <li>Google が広告 Cookie を使用することにより、ユーザーが当サイトや他のサイトにアクセスした際の情報に基づいて、Google やそのパートナーが適切な広告をユーザーに表示できます。</li>
+      <li>ユーザーは、<a href="https://adssettings.google.com/" rel="noopener">広告設定</a>でパーソナライズ広告を無効にできます。また、<a href="https://www.aboutads.info/choices/" rel="noopener">www.aboutads.info</a> にアクセスすれば、パーソナライズ広告に使われる第三者配信事業者の Cookie を無効にできます。</li>
+    </ul>
+    <p>詳しくは<a href="https://policies.google.com/technologies/ads?hl=ja" rel="noopener">Google の広告に関するポリシー</a>をご覧ください。</p>
+
+    <h2>お問い合わせで取得する情報</h2>
+    <p>メールでお問い合わせいただいた際のお名前・メールアドレスなどは、返信のためだけに使い、法令に基づく場合を除いて第三者に提供しません。</p>
+
+    <h2>免責事項</h2>
+    <p>当サイトの記事は正確な情報を載せるよう努めていますが、内容の正確性や安全性を保証するものではありません。猫の健康に関わることは、かかりつけの動物病院にご相談ください。当サイトからリンクしている外部サイトの内容について、当サイトは責任を負いません。</p>
+
+    <h2>改定</h2>
+    <p>このポリシーは、必要に応じて内容を見直し、改定することがあります。</p>
+
+    <h2>お問い合わせ先</h2>
+    <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+    <p>制定日：2026年11月22日</p>
+  </article>
+</Base>
